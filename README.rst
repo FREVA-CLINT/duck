@@ -2,24 +2,13 @@
 Duck
 ====
 
+.. image:: https://github.com/FREVA-CLINT/duck/actions/workflows/main.yml/badge.svg
+    :target: https://github.com/FREVA-CLINT/duck/actions
+    :alt: Build Status
 
-.. image:: https://img.shields.io/pypi/v/duck.svg
-        :target: https://pypi.python.org/pypi/duck
-
-.. image:: https://img.shields.io/travis/cehbrecht/duck.svg
-        :target: https://travis-ci.com/cehbrecht/duck
-
-.. image:: https://readthedocs.org/projects/duck/badge/?version=latest
-        :target: https://duck.readthedocs.io/en/latest/?version=latest
-        :alt: Documentation Status
-
-.. image:: https://img.shields.io/github/license/cehbrecht/duck.svg
-    :target: https://github.com/cehbrecht/duck/blob/master/LICENSE.txt
+.. image:: https://img.shields.io/github/license/FREVA-CLINT/duck.svg
+    :target: https://github.com/FREVA-CLINT/duck/blob/master/LICENSE.txt
     :alt: GitHub license
-
-.. image:: https://badges.gitter.im/bird-house/birdhouse.svg
-    :target: https://gitter.im/bird-house/birdhouse?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
-    :alt: Join the chat at https://gitter.im/bird-house/birdhouse
 
 Duck (the bird)
   *Ducks are very social animals, as is evident by their loud quacking at all hours of the day.* (`Smart Birds`_)
@@ -33,7 +22,7 @@ Learn more about Duck in its official documentation at
 https://duck.readthedocs.io.
 
 Submit bug reports, questions and feature requests at
-https://github.com/cehbrecht/duck/issues
+https://github.com/FREVA-CLINT/duck/issues
 
 Contributing
 ------------
