@@ -3,7 +3,7 @@ from pathlib import Path
 from pywps import Process
 from pywps import LiteralInput
 from pywps import ComplexInput, ComplexOutput
-from pywps import Format, FORMATS
+from pywps import FORMATS
 from pywps.app.Common import Metadata
 # from pywps.app.exceptions import ProcessError
 
@@ -12,7 +12,7 @@ from duck import clintai
 import logging
 LOGGER = logging.getLogger("PYWPS")
 
-FORMAT_PNG = Format("image/png", extension=".png", encoding="base64")
+# FORMAT_PNG = Format("image/png", extension=".png", encoding="base64")
 
 
 class ClintAI(Process):
@@ -35,14 +35,6 @@ class ClintAI(Process):
                           abstract='NetCDF Output produced by ClintAI.',
                           as_reference=True,
                           supported_formats=[FORMATS.NETCDF]),
-            ComplexOutput('mask', 'NetCDF Mask',
-                          abstract='NetCDF Mask produced by ClintAI.',
-                          as_reference=True,
-                          supported_formats=[FORMATS.NETCDF]),
-            # ComplexOutput('plot_gt', 'plot gt',
-            #               abstract='plot gt.',
-            #               as_reference=True,
-            #               supported_formats=[FORMAT_PNG]),
             # ComplexOutput('plot_output_comp', 'plot output comp',
             #               abstract='plot output comp.',
             #               as_reference=True,
@@ -77,10 +69,8 @@ class ClintAI(Process):
 
         clintai.run(dataset, data_type, outdir=self.workdir)
 
-        response.outputs["output"].file = Path(self.workdir + "/outputs/demo_output.nc")
-        response.outputs["mask"].file = Path(self.workdir + "/outputs/demo_mask.nc")
+        response.outputs["output"].file = Path(self.workdir + "/outputs/demo_output_comp.nc")
         # response.outputs["log"].file = Path(self.workdir + "/logs/demo.log")
-        # response.outputs["plot_gt"].file = Path(self.workdir + "/images/demo_gt.png")
         # response.outputs["plot_output_comp"].file = Path(self.workdir + "/images/demo_output_comp.png")
 
         response.update_status('done.', 100)
