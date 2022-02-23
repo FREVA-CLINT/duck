@@ -58,8 +58,10 @@ class ClintAI(Process):
             metadata=[
                 Metadata('Clint AI', 'https://github.com/FREVA-CLINT/climatereconstructionAI'),
                 Metadata('Clint Project', 'https://climateintelligence.eu/'),
+                Metadata('HadCRUT on Wikipedia', 'https://en.wikipedia.org/wiki/HadCRUT'),
                 Metadata('HadCRUT4', 'https://www.metoffice.gov.uk/hadobs/hadcrut4/'),
-                Metadata('Near Surface Air Temperature', 'https://www.atlas.impact2c.eu/en/climate/temperature/?parent_id=22'),
+                Metadata('Near Surface Air Temperature',
+                         'https://www.atlas.impact2c.eu/en/climate/temperature/?parent_id=22'),
             ],
             inputs=inputs,
             outputs=outputs,
@@ -71,7 +73,7 @@ class ClintAI(Process):
         dataset = request.inputs['dataset'][0].file
         data_type = DATA_TYPES_MAP[request.inputs['data_type'][0].data]
 
-        response.update_status('starting ...', 0)
+        response.update_status('infilling ...', 10)
 
         clintai.run(dataset, data_type, outdir=self.workdir)
 
