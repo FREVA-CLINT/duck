@@ -14,11 +14,15 @@ LOGGER = logging.getLogger("PYWPS")
 
 # FORMAT_PNG = Format("image/png", extension=".png", encoding="base64")
 
+DATA_TYPES_MAP = {
+    "Near Surface Air Temperature": "tas",
+}
+
 
 class ClintAI(Process):
     def __init__(self):
         inputs = [
-            ComplexInput('dataset', 'Upload your NetCDF file here',
+            ComplexInput('dataset', 'Upload your HadCRUT4 file here',
                          abstract='Enter a URL pointing to a NetCDF file.',
                          min_occurs=1,
                          max_occurs=1,
@@ -27,8 +31,8 @@ class ClintAI(Process):
                          abstract="Choose data type.",
                          min_occurs=1,
                          max_occurs=1,
-                         default='tas',
-                         allowed_values=['tas']),
+                         # default='tas',
+                         allowed_values=['Near Surface Air Temperature']),
         ]
         outputs = [
             ComplexOutput('output', 'NetCDF Output',
@@ -50,10 +54,12 @@ class ClintAI(Process):
             identifier="clintai",
             title="ClintAI",
             version="0.1.0",
-            abstract="Fills the gaps in your uploaded dataset.",
+            abstract="Fills the gaps in your uploaded climate dataset (hadcrut v4).",
             metadata=[
                 Metadata('Clint AI', 'https://github.com/FREVA-CLINT/climatereconstructionAI'),
                 Metadata('Clint Project', 'https://climateintelligence.eu/'),
+                Metadata('HadCRUT4', 'https://www.metoffice.gov.uk/hadobs/hadcrut4/'),
+                Metadata('Near Surface Air Temperature', 'https://www.atlas.impact2c.eu/en/climate/temperature/?parent_id=22'),
             ],
             inputs=inputs,
             outputs=outputs,
@@ -63,7 +69,7 @@ class ClintAI(Process):
 
     def _handler(self, request, response):
         dataset = request.inputs['dataset'][0].file
-        data_type = request.inputs['data_type'][0].data
+        data_type = DATA_TYPES_MAP[request.inputs['data_type'][0].data]
 
         response.update_status('starting ...', 0)
 
