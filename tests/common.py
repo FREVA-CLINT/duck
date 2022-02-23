@@ -1,3 +1,5 @@
+import os
+
 from pywps import get_ElementMakerForVersion
 from pywps.app.basic import get_xpath_ns
 from pywps.tests import WpsClient, WpsTestResponse
@@ -5,6 +7,19 @@ from pywps.tests import WpsClient, WpsTestResponse
 VERSION = "1.0.0"
 WPS, OWS = get_ElementMakerForVersion(VERSION)
 xpath_ns = get_xpath_ns(VERSION)
+
+
+TESTS_HOME = os.path.abspath(os.path.dirname(__file__))
+
+
+def resource_file(filepath):
+    return os.path.join(TESTS_HOME, "testdata", filepath)
+
+
+TESTDATA = {
+    'tas_hadcrut_small':
+    f"file://{resource_file('tas_hadcrut_187709_189308.nc')}"
+}
 
 
 class WpsTestClient(WpsClient):
