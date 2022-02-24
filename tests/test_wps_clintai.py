@@ -9,6 +9,7 @@ from pywps.tests import (
 
 from tests.common import (
     HADCRUT4_SMALL_NC,
+    HADCRUT4_SMALL_NC_ZIP,
     HADCRUT4_ANOMALIES_1_NC
 )
 
@@ -41,6 +42,17 @@ def test_wps_clintai_hadcrut4_error_wrong_data_type():
     # print(resp.data)
     assert b"ExceptionReport" in resp.data
     # assert_process_exception(resp, code="MissingParameterValue")
+
+
+def test_wps_clintai_hadcrut4_small_zip():
+    client = client_for(Service(processes=[ClintAI()]))
+    datainputs = f"dataset=@xlink:href={HADCRUT4_SMALL_NC_ZIP}"
+    datainputs += ";data_type=Near Surface Air Temperature"
+    resp = client.get(
+        f"?service=WPS&request=Execute&version=1.0.0&identifier=clintai&datainputs={datainputs}"
+    )
+    # print(resp.data)
+    assert_response_success(resp)
 
 
 # @pytest.mark.xfail(reason="not working")

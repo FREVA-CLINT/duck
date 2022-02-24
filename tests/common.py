@@ -22,6 +22,8 @@ def resource_file(filepath):
 
 HADCRUT4_SMALL_NC = resource_file(
     "tas_hadcrut4/tas_hadcrut4_187709_189308.nc")
+HADCRUT4_SMALL_NC_ZIP = resource_file(
+    "tas_hadcrut4.zip")
 HADCRUT4_ANOMALIES_1_NC = resource_file(
     "HadCRUT.4.6.0.0.anomalies.1_to_10_netcdf/HadCRUT.4.6.0.0.anomalies.1.nc")
 

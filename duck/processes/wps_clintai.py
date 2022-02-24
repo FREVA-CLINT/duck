@@ -1,4 +1,5 @@
 from pathlib import Path
+from zipfile import ZipFile
 
 from pywps import Process
 from pywps import LiteralInput
@@ -28,7 +29,7 @@ class ClintAI(Process):
                                   "Use HadCRUT4 files https://www.metoffice.gov.uk/hadobs/hadcrut4/",
                          min_occurs=1,
                          max_occurs=1,
-                         supported_formats=[FORMATS.NETCDF]),
+                         supported_formats=[FORMATS.NETCDF, FORMATS.ZIP]),
             LiteralInput('data_type', "Data Type",
                          abstract="Choose data type.",
                          min_occurs=1,
@@ -83,10 +84,20 @@ class ClintAI(Process):
         dataset = request.inputs['dataset'][0].file
         data_type = DATA_TYPES_MAP[request.inputs['data_type'][0].data]
 
-        response.update_status('infilling ...', 10)
+        response.update_status('prepare dataset ...', 10)
+
+        if Path(dataset).suffix == ".zip":
+            with ZipFile(dataset, 'r') as zip:
+                print("extraction zip file", self.workdir)
+                zip.extractall(self.workdir)
+
+        # only one dataset file
+        dataset_0 = list(Path(self.workdir).rglob('*.nc'))[0]
+
+        response.update_status('infilling ...', 20)
 
         try:
-            clintai.run(dataset, data_type, outdir=self.workdir)
+            clintai.run(dataset_0.as_posix(), data_type, outdir=self.workdir)
         except Exception:
             raise ProcessError("infilling failed!.")
 

@@ -52,7 +52,7 @@ def run(dataset, data_type, outdir):
     shutil.move(dataset, input_dir)
     # print(f"dataset={dataset}")
     cfg_file = write_clintai_cfg(base_dir=outdir, name=name, data_type=data_type)
-    LOGGER.debug(f"written cfg {cfg_file}")
+    # print(f"written cfg {cfg_file}")
     try:
         evaluate(cfg_file.as_posix())
     except SystemExit:
