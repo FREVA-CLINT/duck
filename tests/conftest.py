@@ -6,10 +6,11 @@ import requests
 from zipfile import ZipFile
 
 
-from tests.common import TEST_DATA_CACHE_DIR
-
-HADCRUT4_URL = "https://www.metoffice.gov.uk/hadobs/hadcrut4/data/current/gridded_fields/"
-HADCRUT4_NC_ZIP = "HadCRUT.4.6.0.0.anomalies.1_to_10_netcdf.zip"
+from tests.common import (
+    TEST_DATA_CACHE_DIR,
+    HADCRUT4_URL,
+    HADCRUT4_NC_ZIP,
+)
 
 
 @pytest.fixture
