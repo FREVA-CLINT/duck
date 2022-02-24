@@ -60,8 +60,7 @@ def run(dataset, data_type, dataset_name, outdir):
     try:
         evaluate(cfg_file.as_posix())
     except SystemExit:
-        # raise Exception("clintai exited with an error.")
-        pass
+        raise Exception("clintai exited with an error.")
     # TODO: remove dummy png files
     # Path(f"{outdir}/outputs/demo_masked_gt_0.png").write_text("Sorry. No plot.")
     # Path(f"{outdir}/outputs/demo_output_comp_0.png").write_text("Sorry. No plot.")
