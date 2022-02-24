@@ -2,8 +2,6 @@ import os
 from jinja2 import Template
 from pathlib import Path
 import shutil
-# import subprocess
-# from subprocess import check_output, CalledProcessError
 
 from climatereconstructionai import evaluate
 
@@ -31,6 +29,8 @@ def write_clintai_cfg(base_dir, name, data_type):
     --eval-names demo
     --dataset-name hadcrut4
     """
+    # TODO: --plot-results 0
+    # TODO: --dataset-name hadcrut
     cfg = Template(cfg_templ).render(
         base_dir=base_dir,
         data_dir=DATA_DIR,
@@ -53,6 +53,6 @@ def run(dataset, data_type, outdir):
     cfg_file = write_clintai_cfg(base_dir=outdir, name=name, data_type=data_type)
     print(f"written cfg {cfg_file}")
     evaluate(cfg_file.as_posix())
-    # subprocess.run(
-    #     ['crai-evaluate', '--load-from-file',  cfg_file.as_posix()],
-    #     check=True)
+    # TODO: remove dummy png files
+    Path(f"{outdir}/outputs/demo_masked_gt_0.png").write_text("Sorry. No plot.")
+    Path(f"{outdir}/outputs/demo_output_comp_0.png").write_text("Sorry. No plot.")

@@ -3,7 +3,7 @@ from pathlib import Path
 from pywps import Process
 from pywps import LiteralInput
 from pywps import ComplexInput, ComplexOutput
-from pywps import FORMATS
+from pywps import FORMATS, Format
 from pywps.app.Common import Metadata
 # from pywps.app.exceptions import ProcessError
 
@@ -12,7 +12,7 @@ from duck import clintai
 import logging
 LOGGER = logging.getLogger("PYWPS")
 
-# FORMAT_PNG = Format("image/png", extension=".png", encoding="base64")
+FORMAT_PNG = Format("image/png", extension=".png", encoding="base64")
 
 DATA_TYPES_MAP = {
     "Near Surface Air Temperature": "tas",
@@ -40,10 +40,14 @@ class ClintAI(Process):
                           abstract='NetCDF Output produced by ClintAI.',
                           as_reference=True,
                           supported_formats=[FORMATS.NETCDF]),
-            # ComplexOutput('plot_output_comp', 'plot output comp',
-            #               abstract='plot output comp.',
-            #               as_reference=True,
-            #               supported_formats=[FORMAT_PNG]),
+            ComplexOutput('plot_original', 'Plot: before',
+                          abstract='Plot of original input file.',
+                          as_reference=True,
+                          supported_formats=[FORMAT_PNG]),
+            ComplexOutput('plot_infilled', 'Plot: after',
+                          abstract='Plot of infilled output file.',
+                          as_reference=True,
+                          supported_formats=[FORMAT_PNG]),
             # ComplexOutput('log', 'logfile',
             #               abstract='logfile of ClintAI execution.',
             #               as_reference=True,
@@ -81,7 +85,8 @@ class ClintAI(Process):
 
         response.outputs["output"].file = Path(self.workdir + "/outputs/demo_output_comp.nc")
         # response.outputs["log"].file = Path(self.workdir + "/logs/demo.log")
-        # response.outputs["plot_output_comp"].file = Path(self.workdir + "/images/demo_output_comp.png")
+        response.outputs["plot_original"].file = Path(self.workdir + "/outputs/demo_masked_gt_0.png")
+        response.outputs["plot_infilled"].file = Path(self.workdir + "/outputs/demo_output_comp_0.png")
 
         response.update_status('done.', 100)
         return response
