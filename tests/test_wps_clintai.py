@@ -2,19 +2,22 @@ import pytest
 
 from pywps import Service
 from pywps.tests import (
-    assert_process_exception,
+    # assert_process_exception,
     assert_response_success,
     client_for
 )
 
-from .common import TESTDATA
+from tests.common import (
+    HADCRUT4_SMALL_NC,
+    HADCRUT4_ANOMALIES_1_NC
+)
 
 from duck.processes.wps_clintai import ClintAI
 
 
 def test_wps_clintai_hadcrut4_small():
     client = client_for(Service(processes=[ClintAI()]))
-    datainputs = f"dataset=@xlink:href={TESTDATA['tas_hadcrut4_small.nc']}"
+    datainputs = f"dataset=@xlink:href={HADCRUT4_SMALL_NC}"
     datainputs += ";data_type=Near Surface Air Temperature"
     resp = client.get(
         f"?service=WPS&request=Execute&version=1.0.0&identifier=clintai&datainputs={datainputs}"
@@ -27,7 +30,7 @@ def test_wps_clintai_hadcrut4_small():
 
 def test_wps_clintai_hadcrut4_error_wrong_data_type():
     client = client_for(Service(processes=[ClintAI()]))
-    datainputs = f"dataset=@xlink:href={TESTDATA['tas_hadcrut4_small.nc']}"
+    datainputs = f"dataset=@xlink:href={HADCRUT4_SMALL_NC}"
     datainputs += ";data_type=Temperature Anomaly"
     resp = client.get(
         f"?service=WPS&request=Execute&version=1.0.0&identifier=clintai&datainputs={datainputs}"
@@ -44,7 +47,7 @@ def test_wps_clintai_hadcrut4_error_wrong_data_type():
 @pytest.mark.skip(reason="not working")
 def test_wps_clintai_hadcrut4_anomalies(load_test_data):
     client = client_for(Service(processes=[ClintAI()]))
-    datainputs = f"dataset=@xlink:href={TESTDATA['HadCRUT4_anomalies_1.nc']}"
+    datainputs = f"dataset=@xlink:href={HADCRUT4_ANOMALIES_1_NC}"
     datainputs += ";data_type=Temperature Anomaly"
     resp = client.get(
         f"?service=WPS&request=Execute&version=1.0.0&identifier=clintai&datainputs={datainputs}"

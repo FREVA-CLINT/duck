@@ -16,16 +16,14 @@ TESTS_HOME = os.path.abspath(os.path.dirname(__file__))
 
 def resource_file(filepath):
     p = Path(f"{TESTS_HOME}/testdata/{filepath}")
-    # print("test file", p.as_posix())
-    return p.as_posix()
+    print("test file", p.as_uri())
+    return p.as_uri()
 
 
-TESTDATA = {
-    "tas_hadcrut4_small.nc":
-    f"file://{resource_file('tas_hadcrut_187709_189308.nc')}",
-    "HadCRUT4_anomalies_1.nc":
-    f"file://{resource_file('HadCRUT.4.6.0.0.anomalies.1_to_10_netcdf/HadCRUT.4.6.0.0.anomalies.1.nc')}",
-}
+HADCRUT4_SMALL_NC = resource_file(
+    "tas_hadcrut_187709_189308.nc")
+HADCRUT4_ANOMALIES_1_NC = resource_file(
+    "HadCRUT.4.6.0.0.anomalies.1_to_10_netcdf/HadCRUT.4.6.0.0.anomalies.1.nc")
 
 
 class WpsTestClient(WpsClient):
