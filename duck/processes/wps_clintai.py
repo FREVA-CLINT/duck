@@ -84,7 +84,7 @@ class ClintAI(Process):
         dataset = request.inputs['dataset'][0].file
         data_type = DATA_TYPES_MAP[request.inputs['data_type'][0].data]
 
-        response.update_status('prepare dataset ...', 10)
+        response.update_status('Prepare dataset ...', 10)
 
         if Path(dataset).suffix == ".zip":
             with ZipFile(dataset, 'r') as zip:
@@ -92,14 +92,17 @@ class ClintAI(Process):
                 zip.extractall(self.workdir)
 
         # only one dataset file
-        dataset_0 = list(Path(self.workdir).rglob('*.nc'))[0]
+        try:
+            dataset_0 = list(Path(self.workdir).rglob('*.nc'))[0]
+        except Exception:
+            raise ProcessError("Could not extract netcdf file.")
 
-        response.update_status('infilling ...', 20)
+        response.update_status('Infilling ...', 20)
 
         try:
             clintai.run(dataset_0.as_posix(), data_type, outdir=self.workdir)
         except Exception:
-            raise ProcessError("infilling failed!.")
+            raise ProcessError("Infilling failed.")
 
         response.outputs["output"].file = Path(self.workdir + "/outputs/demo_output_comp.nc")
         # response.outputs["log"].file = Path(self.workdir + "/logs/demo.log")
