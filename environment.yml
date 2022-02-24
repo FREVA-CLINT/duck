@@ -12,6 +12,7 @@ dependencies:
 # tests
 - pytest
 - requests
+- flake8
 # clint ai
 - pytorch>=1.8.0
 - tqdm>=4.59.0
