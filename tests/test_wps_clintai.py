@@ -40,8 +40,9 @@ def test_wps_clintai_hadcrut4_error_wrong_data_type():
     # assert_process_exception(resp, code="MissingParameterValue")
 
 
-@pytest.mark.xfail(reason="not working")
-def test_wps_clintai_hadcrut4_anomalies():
+# @pytest.mark.xfail(reason="not working")
+@pytest.mark.skip(reason="not working")
+def test_wps_clintai_hadcrut4_anomalies(load_test_data):
     client = client_for(Service(processes=[ClintAI()]))
     datainputs = f"dataset=@xlink:href={TESTDATA['HadCRUT4_anomalies_1.nc']}"
     datainputs += ";data_type=Temperature Anomaly"

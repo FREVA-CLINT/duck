@@ -10,6 +10,7 @@ WPS, OWS = get_ElementMakerForVersion(VERSION)
 xpath_ns = get_xpath_ns(VERSION)
 
 
+TEST_DATA_CACHE_DIR = Path.home() / ".duck" / "cache" / "testdata"
 TESTS_HOME = os.path.abspath(os.path.dirname(__file__))
 
 
