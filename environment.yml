@@ -24,5 +24,5 @@ dependencies:
 - netcdf4>=1.5.8
 - xesmf>=0.6.2
 # plot
-- cartopy>=0.20.2
+- cartopy>=0.19
 - numba>=0.55.1
