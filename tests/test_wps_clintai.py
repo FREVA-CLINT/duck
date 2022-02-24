@@ -59,7 +59,7 @@ def test_wps_clintai_hadcrut4_small_zip():
 
 
 # @pytest.mark.xfail(reason="not working")
-@pytest.mark.skip(reason="not working")
+# @pytest.mark.skip(reason="not working")
 def test_wps_clintai_hadcrut4_anomalies(load_test_data):
     client = client_for(Service(processes=[ClintAI()]))
     datainputs = f"dataset=@xlink:href={HADCRUT4_ANOMALIES_1_NC}"

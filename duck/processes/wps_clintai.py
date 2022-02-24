@@ -104,6 +104,7 @@ class ClintAI(Process):
         # only one dataset file
         try:
             dataset_0 = list(Path(self.workdir).rglob('*.nc'))[0]
+            print(dataset_0)
         except Exception:
             raise ProcessError("Could not extract netcdf file.")
 
