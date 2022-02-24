@@ -15,16 +15,6 @@ LOGGER = logging.getLogger("PYWPS")
 
 FORMAT_PNG = Format("image/png", extension=".png", encoding="base64")
 
-DATA_TYPES = {
-    "HadCRUT5": "tas_mean",
-    "HadCRUT4": "tas",
-}
-
-DATASET_NAME = {
-    "HadCRUT5": "hadcrut5",
-    "HadCRUT4": "hadcrut4",
-}
-
 
 class ClintAI(Process):
     def __init__(self):
@@ -36,15 +26,11 @@ class ClintAI(Process):
                          min_occurs=1,
                          max_occurs=1,
                          supported_formats=[FORMATS.NETCDF, FORMATS.ZIP]),
-            LiteralInput('hadcrut', "HadCRUT version",
-                         abstract="Choose HadCRUT version of your dataset.",
+            LiteralInput('hadcrut', "HadCRUT variant",
+                         abstract="Choose HadCRUT variant of your dataset.",
                          min_occurs=1,
                          max_occurs=1,
-                         # default="HadCRUT5",
-                         allowed_values=[
-                            "HadCRUT5",
-                            "HadCRUT4"
-                         ]),
+                         allowed_values=clintai.HADCRUT_VALUES),
         ]
         outputs = [
             ComplexOutput('output', 'Infilled HadCRUT output',
@@ -106,8 +92,7 @@ class ClintAI(Process):
         try:
             clintai.run(
                 dataset_0,
-                data_type=DATA_TYPES[hadcrut],
-                dataset_name=DATASET_NAME[hadcrut],
+                hadcrut=hadcrut,
                 outdir=workdir)
         except Exception:
             raise ProcessError("Infilling failed.")

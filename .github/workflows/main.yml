@@ -4,40 +4,40 @@ name: build ⚙️
 on: [ push, pull_request ]
 
 jobs:
-  pypi:
-
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        include:
-          - python-version: 3.7
-            allowed_to_fail: true
-    steps:
-    - name: Checkout repository and submodules
-      uses: actions/checkout@v2
-      with:
-        submodules: recursive
-    - name: Install packages
-      run: |
-        sudo apt-get -y install pandoc libproj-dev proj-data proj-bin libgeos-dev
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2
-      with:
-        python-version: ${{ matrix.python-version }}
-    - name: Install requirements 📦
-      run: |
-        python -m pip install --upgrade pip
-        pip install -e .
-        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-        if [ -f requirements_dev.txt ]; then pip install -r requirements_dev.txt; fi
-    - name: Test with pytest ⚙️
-      run: make test
-    # - name: Lint with flake8 ⚙️
-    #   run: make lint
-    #   if: matrix.python-version == 3.7
-    # - name: Build docs 🏗️
-    #   run: make docs
-    #   if: matrix.python-version == 3.7
+  # pypi:
+  #
+  #   runs-on: ubuntu-latest
+  #   strategy:
+  #     matrix:
+  #       include:
+  #         - python-version: 3.7
+  #           allowed_to_fail: true
+  #   steps:
+  #   - name: Checkout repository and submodules
+  #     uses: actions/checkout@v2
+  #     with:
+  #       submodules: recursive
+  #   - name: Install packages
+  #     run: |
+  #       sudo apt-get -y install pandoc libproj-dev proj-data proj-bin libgeos-dev
+  #   - name: Set up Python ${{ matrix.python-version }}
+  #     uses: actions/setup-python@v2
+  #     with:
+  #       python-version: ${{ matrix.python-version }}
+  #   - name: Install requirements 📦
+  #     run: |
+  #       python -m pip install --upgrade pip
+  #       pip install -e .
+  #       if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+  #       if [ -f requirements_dev.txt ]; then pip install -r requirements_dev.txt; fi
+  #   - name: Test with pytest ⚙️
+  #     run: make test
+  #   # - name: Lint with flake8 ⚙️
+  #   #   run: make lint
+  #   #   if: matrix.python-version == 3.7
+  #   # - name: Build docs 🏗️
+  #   #   run: make docs
+  #   #   if: matrix.python-version == 3.7
 
   conda:
     runs-on: ubuntu-latest

@@ -15,12 +15,17 @@ from tests.common import (
 )
 
 from duck.processes.wps_clintai import ClintAI
+from duck.clintai import (
+    HADCRUT5_TAS_MEAN,
+    HADCRUT4_TEMPERATURE_ANOMALY,
+    HADCRUT4_TAS,
+)
 
 
-def test_wps_clintai_hadcrut4_small():
+def test_wps_clintai_hadcrut4_tas_small():
     client = client_for(Service(processes=[ClintAI()]))
     datainputs = f"dataset=@xlink:href={HADCRUT4_SMALL_NC}"
-    datainputs += ";hadcrut=HadCRUT4"
+    datainputs += f";hadcrut={HADCRUT4_TAS}"
     resp = client.get(
         f"?service=WPS&request=Execute&version=1.0.0&identifier=clintai&datainputs={datainputs}"
     )
@@ -45,10 +50,10 @@ def test_wps_clintai_hadcrut4_error_wrong_parameter():
     assert_process_exception(resp, code="InvalidParameterValue")
 
 
-def test_wps_clintai_hadcrut4_small_zip():
+def test_wps_clintai_hadcrut4_tas_small_zip():
     client = client_for(Service(processes=[ClintAI()]))
     datainputs = f"dataset=@xlink:href={HADCRUT4_SMALL_NC_ZIP}"
-    datainputs += ";hadcrut=HadCRUT4"
+    datainputs += f";hadcrut={HADCRUT4_TAS}"
     resp = client.get(
         f"?service=WPS&request=Execute&version=1.0.0&identifier=clintai&datainputs={datainputs}"
     )
@@ -56,13 +61,12 @@ def test_wps_clintai_hadcrut4_small_zip():
     assert_response_success(resp)
 
 
-@pytest.mark.xfail(reason="not working")
-# @pytest.mark.skip(reason="not working")
-def test_wps_clintai_hadcrut4_tas():
+@pytest.mark.xfail(reason="ERROR:Inconsistent dimensions in file HadCRUT.4.6.0.0.median.nc")
+@pytest.mark.online
+def test_wps_clintai_hadcrut4_temperature_anomaly():
     client = client_for(Service(processes=[ClintAI()]))
-    # datainputs = f"dataset=@xlink:href={HADCRUT4_ANOMALIES_1_NC}"
     datainputs = f"dataset=@xlink:href={HADCRUT4_TAS_NC_ZIP}"
-    datainputs += ";hadcrut=HadCRUT4"
+    datainputs += f";hadcrut={HADCRUT4_TEMPERATURE_ANOMALY}"
     resp = client.get(
         f"?service=WPS&request=Execute&version=1.0.0&identifier=clintai&datainputs={datainputs}"
     )
@@ -70,10 +74,11 @@ def test_wps_clintai_hadcrut4_tas():
     assert_response_success(resp)
 
 
+@pytest.mark.online
 def test_wps_clintai_hadcrut5_tas_mean():
     client = client_for(Service(processes=[ClintAI()]))
     datainputs = f"dataset=@xlink:href={HadCRUT5_TAS_MEAN_NC}"
-    datainputs += ";hadcrut=HadCRUT5"
+    datainputs += f";hadcrut={HADCRUT5_TAS_MEAN}"
     resp = client.get(
         f"?service=WPS&request=Execute&version=1.0.0&identifier=clintai&datainputs={datainputs}"
     )

@@ -1,6 +1,7 @@
 import os
 from jinja2 import Template
 import shutil
+import collections
 
 from climatereconstructionai import evaluate
 
@@ -9,6 +10,28 @@ LOGGER = logging.getLogger("PYWPS")
 
 DUCK_HOME = os.path.abspath(os.path.dirname(__file__))
 DATA_DIR = os.path.join(DUCK_HOME, "data")
+
+HADCRUT5_TAS_MEAN = "HadCRUT5"
+HADCRUT4_TEMPERATURE_ANOMALY = "HadCRUT4"
+HADCRUT4_TAS = "HadCRUT"
+
+HADCRUT = collections.OrderedDict({
+    HADCRUT5_TAS_MEAN: {
+        "variable": "tas_mean",
+        "name": "hadcrut5",
+    },
+    HADCRUT4_TEMPERATURE_ANOMALY: {
+        "variable": "temperature_anomaly",
+        "name": "hadcrut4",
+    },
+    HADCRUT4_TAS: {
+        "variable": "tas",
+        "name": "hadcrut4",
+    },
+})
+
+
+HADCRUT_VALUES = list(HADCRUT.keys())
 
 
 def write_clintai_cfg(base_dir, name, data_type, dataset_name):
@@ -41,7 +64,9 @@ def write_clintai_cfg(base_dir, name, data_type, dataset_name):
     return out
 
 
-def run(dataset, data_type, dataset_name, outdir):
+def run(dataset, hadcrut, outdir):
+    data_type = HADCRUT[hadcrut]["variable"]
+    dataset_name = HADCRUT[hadcrut]["name"]
     (outdir / "masks").mkdir()
     (outdir / "outputs").mkdir()
     input_dir = outdir / "test_large"
