@@ -15,58 +15,50 @@ LOGGER = logging.getLogger("PYWPS")
 
 FORMAT_PNG = Format("image/png", extension=".png", encoding="base64")
 
-DATA_TYPES_MAP = {
-    "Near Surface Air Temperature": "tas",
-    # "Temperature Anomaly": "temperature_anomaly",
-    "Temperature Mean": "tas_mean",
+DATA_TYPES = {
+    "HadCRUT5": "tas_mean",
+    "HadCRUT4": "tas",
+}
+
+DATASET_NAME = {
+    "HadCRUT5": "hadcrut5",
+    "HadCRUT4": "hadcrut4",
 }
 
 
 class ClintAI(Process):
     def __init__(self):
         inputs = [
-            ComplexInput('dataset', 'Upload your HadCRUT file here',
-                         abstract="Enter a URL pointing to a NetCDF file."
-                                  "Use HadCRUT4 files https://www.metoffice.gov.uk/hadobs/hadcrut4/",
+            ComplexInput('dataset', 'Add your HadCRUT file here',
+                         abstract="Enter a URL pointing to a HadCRUT NetCDF file."
+                                  "Example: "
+                                  "https://www.metoffice.gov.uk/hadobs/hadcrut5/data/current/non-infilled/HadCRUT.5.0.1.0.anomalies.ensemble_mean.nc",  # moqa
                          min_occurs=1,
                          max_occurs=1,
                          supported_formats=[FORMATS.NETCDF, FORMATS.ZIP]),
-            LiteralInput('data_type', "Data Type",
-                         abstract="Choose data type.",
-                         min_occurs=1,
-                         max_occurs=1,
-                         # default='tas',
-                         allowed_values=[
-                            "Near Surface Air Temperature",
-                            "Temperature Mean",
-                         ]),
             LiteralInput('hadcrut', "HadCRUT version",
                          abstract="Choose HadCRUT version of your dataset.",
                          min_occurs=1,
                          max_occurs=1,
-                         # default='tas',
+                         # default="HadCRUT5",
                          allowed_values=[
-                            "hadcrut4",
-                            "hadcrut5"
+                            "HadCRUT5",
+                            "HadCRUT4"
                          ]),
         ]
         outputs = [
-            ComplexOutput('output', 'NetCDF Output',
-                          abstract='NetCDF Output produced by ClintAI.',
+            ComplexOutput('output', 'Infilled HadCRUT output',
+                          abstract='NetCDF output produced by ClintAI.',
                           as_reference=True,
                           supported_formats=[FORMATS.NETCDF]),
             ComplexOutput('plot_original', 'Plot: before',
-                          abstract='Plot of original input file.',
+                          abstract='Plot of original input file. First timestep.',
                           as_reference=True,
                           supported_formats=[FORMAT_PNG]),
             ComplexOutput('plot_infilled', 'Plot: after',
-                          abstract='Plot of infilled output file.',
+                          abstract='Plot of infilled output file. First timestep.',
                           as_reference=True,
                           supported_formats=[FORMAT_PNG]),
-            # ComplexOutput('log', 'logfile',
-            #               abstract='logfile of ClintAI execution.',
-            #               as_reference=True,
-            #               supported_formats=[FORMATS.TEXT]),
         ]
 
         super(ClintAI, self).__init__(
@@ -92,20 +84,20 @@ class ClintAI(Process):
 
     def _handler(self, request, response):
         dataset = request.inputs['dataset'][0].file
-        data_type = DATA_TYPES_MAP[request.inputs['data_type'][0].data]
-        dataset_name = request.inputs['hadcrut'][0].data
+        hadcrut = request.inputs['hadcrut'][0].data
 
         response.update_status('Prepare dataset ...', 10)
+        workdir = Path(self.workdir)
 
         if Path(dataset).suffix == ".zip":
             with ZipFile(dataset, 'r') as zip:
-                print("extraction zip file", self.workdir)
-                zip.extractall(self.workdir)
+                print("extraction zip file", workdir)
+                zip.extractall(workdir.as_posix())
 
         # only one dataset file
         try:
-            dataset_0 = list(Path(self.workdir).rglob('*.nc'))[0]
-            print(dataset_0)
+            dataset_0 = list(workdir.rglob('*.nc'))[0]
+            # print(dataset_0)
         except Exception:
             raise ProcessError("Could not extract netcdf file.")
 
@@ -113,17 +105,16 @@ class ClintAI(Process):
 
         try:
             clintai.run(
-                dataset_0.as_posix(),
-                data_type=data_type,
-                dataset_name=dataset_name,
-                outdir=self.workdir)
+                dataset_0,
+                data_type=DATA_TYPES[hadcrut],
+                dataset_name=DATASET_NAME[hadcrut],
+                outdir=workdir)
         except Exception:
             raise ProcessError("Infilling failed.")
 
-        response.outputs["output"].file = Path(self.workdir + "/outputs/demo_output_comp.nc")
-        # response.outputs["log"].file = Path(self.workdir + "/logs/demo.log")
-        response.outputs["plot_original"].file = Path(self.workdir + "/outputs/demo_masked_gt_0.png")
-        response.outputs["plot_infilled"].file = Path(self.workdir + "/outputs/demo_output_comp_0.png")
+        response.outputs["output"].file = workdir / "outputs" / "demo_output_comp.nc"
+        response.outputs["plot_original"].file = workdir / "outputs" / "demo_masked_gt_0.png"
+        response.outputs["plot_infilled"].file = workdir / "outputs" / "demo_output_comp_0.png"
 
         response.update_status('done.', 100)
         return response
