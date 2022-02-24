@@ -20,6 +20,7 @@ def test_wps_clintai_hadcrut4_small():
     client = client_for(Service(processes=[ClintAI()]))
     datainputs = f"dataset=@xlink:href={HADCRUT4_SMALL_NC}"
     datainputs += ";data_type=Near Surface Air Temperature"
+    datainputs += ";hadcrut=hadcrut4"
     resp = client.get(
         f"?service=WPS&request=Execute&version=1.0.0&identifier=clintai&datainputs={datainputs}"
     )
@@ -33,6 +34,7 @@ def test_wps_clintai_hadcrut4_error_wrong_data_type():
     client = client_for(Service(processes=[ClintAI()]))
     datainputs = f"dataset=@xlink:href={HADCRUT4_SMALL_NC}"
     datainputs += ";data_type=Temperature Anomaly"
+    datainputs += ";hadcrut=hadcrut4"
     resp = client.get(
         f"?service=WPS&request=Execute&version=1.0.0&identifier=clintai&datainputs={datainputs}"
     )
@@ -48,6 +50,7 @@ def test_wps_clintai_hadcrut4_small_zip():
     client = client_for(Service(processes=[ClintAI()]))
     datainputs = f"dataset=@xlink:href={HADCRUT4_SMALL_NC_ZIP}"
     datainputs += ";data_type=Near Surface Air Temperature"
+    datainputs += ";hadcrut=hadcrut4"
     resp = client.get(
         f"?service=WPS&request=Execute&version=1.0.0&identifier=clintai&datainputs={datainputs}"
     )
@@ -61,6 +64,7 @@ def test_wps_clintai_hadcrut4_anomalies(load_test_data):
     client = client_for(Service(processes=[ClintAI()]))
     datainputs = f"dataset=@xlink:href={HADCRUT4_ANOMALIES_1_NC}"
     datainputs += ";data_type=Temperature Anomaly"
+    datainputs += ";hadcrut=hadcrut4"
     resp = client.get(
         f"?service=WPS&request=Execute&version=1.0.0&identifier=clintai&datainputs={datainputs}"
     )

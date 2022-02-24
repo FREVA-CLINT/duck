@@ -39,6 +39,15 @@ class ClintAI(Process):
                             "Near Surface Air Temperature",
                             "Temperature Anomaly"
                          ]),
+            LiteralInput('hadcrut', "HadCRUT version",
+                         abstract="Choose HadCRUT version of your dataset.",
+                         min_occurs=1,
+                         max_occurs=1,
+                         # default='tas',
+                         allowed_values=[
+                            "hadcrut4",
+                            "hadcrut5"
+                         ]),
         ]
         outputs = [
             ComplexOutput('output', 'NetCDF Output',
@@ -83,6 +92,7 @@ class ClintAI(Process):
     def _handler(self, request, response):
         dataset = request.inputs['dataset'][0].file
         data_type = DATA_TYPES_MAP[request.inputs['data_type'][0].data]
+        dataset_name = request.inputs['hadcrut'][0].data
 
         response.update_status('Prepare dataset ...', 10)
 
@@ -100,7 +110,11 @@ class ClintAI(Process):
         response.update_status('Infilling ...', 20)
 
         try:
-            clintai.run(dataset_0.as_posix(), data_type, outdir=self.workdir)
+            clintai.run(
+                dataset_0.as_posix(),
+                data_type=data_type,
+                dataset_name=dataset_name,
+                outdir=self.workdir)
         except Exception:
             raise ProcessError("Infilling failed.")
 
