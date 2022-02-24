@@ -9,8 +9,9 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.7]
-        allowed_to_fail: true
+        include:
+          - python-version: 3.7
+            allowed_to_fail: true
     steps:
     - name: Checkout repository and submodules
       uses: actions/checkout@v2
@@ -38,29 +39,31 @@ jobs:
     #   run: make docs
     #   if: matrix.python-version == 3.7
 
-conda:
-  runs-on: ubuntu-latest
-  strategy:
-    matrix:
-      python-version: [3.7]
-  steps:
-    - uses: actions/checkout@v2
-    - name: Setup conda with Python ${{ matrix.python-version }}
-      uses: s-weigand/setup-conda@v1
-      with:
-        update-conda: true
-        python-version: ${{ matrix.python-version }}
-        conda-channels: conda-forge, defaults
-    - name: Conda env configuration
-      run: |
-          conda env create -f environment.yml
-          source activate duck
-          pip install -e ".[dev]"
-    - name: Test with conda
-      run: |
-          source activate duck
-          pytest tests
-      continue-on-error: false
-    - name: Lint with flake8 ⚙️
-      run: make lint
-      if: matrix.python-version == 3.7
+  conda:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - python-version: 3.7
+            allowed_to_fail: false
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup conda with Python ${{ matrix.python-version }}
+        uses: s-weigand/setup-conda@v1
+        with:
+          update-conda: true
+          python-version: ${{ matrix.python-version }}
+          conda-channels: conda-forge, defaults
+      - name: Conda env configuration
+        run: |
+            conda env create -f environment.yml
+            source activate duck
+            pip install -e ".[dev]"
+      - name: Test with conda
+        run: |
+            source activate duck
+            pytest tests
+        continue-on-error: false
+      - name: Lint with flake8 ⚙️
+        run: make lint
+        if: matrix.python-version == 3.7
