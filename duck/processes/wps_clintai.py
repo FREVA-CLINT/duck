@@ -5,7 +5,7 @@ from pywps import LiteralInput
 from pywps import ComplexInput, ComplexOutput
 from pywps import FORMATS, Format
 from pywps.app.Common import Metadata
-# from pywps.app.exceptions import ProcessError
+from pywps.app.exceptions import ProcessError
 
 from duck import clintai
 
@@ -85,7 +85,10 @@ class ClintAI(Process):
 
         response.update_status('infilling ...', 10)
 
-        clintai.run(dataset, data_type, outdir=self.workdir)
+        try:
+            clintai.run(dataset, data_type, outdir=self.workdir)
+        except Exception:
+            raise ProcessError("infilling failed!.")
 
         response.outputs["output"].file = Path(self.workdir + "/outputs/demo_output_comp.nc")
         # response.outputs["log"].file = Path(self.workdir + "/logs/demo.log")

@@ -15,7 +15,7 @@ TESTS_HOME = os.path.abspath(os.path.dirname(__file__))
 
 def resource_file(filepath):
     p = Path(f"{TESTS_HOME}/testdata/{filepath}")
-    print("test file", p.as_posix())
+    # print("test file", p.as_posix())
     return p.as_posix()
 
 
