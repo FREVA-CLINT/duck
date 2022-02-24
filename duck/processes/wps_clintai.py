@@ -22,8 +22,9 @@ DATA_TYPES_MAP = {
 class ClintAI(Process):
     def __init__(self):
         inputs = [
-            ComplexInput('dataset', 'Upload your HadCRUT4 file here',
-                         abstract='Enter a URL pointing to a NetCDF file.',
+            ComplexInput('dataset', 'Upload your HadCRUT file here',
+                         abstract="Enter a URL pointing to a NetCDF file."
+                                  "Use HadCRUT4 files https://www.metoffice.gov.uk/hadobs/hadcrut4/",
                          min_occurs=1,
                          max_occurs=1,
                          supported_formats=[FORMATS.NETCDF]),
@@ -54,12 +55,13 @@ class ClintAI(Process):
             identifier="clintai",
             title="ClintAI",
             version="0.1.0",
-            abstract="Fills the gaps in your uploaded climate dataset (hadcrut v4).",
+            abstract="Fills the gaps in your uploaded climate dataset (HadCRUT).",
             metadata=[
                 Metadata('Clint AI', 'https://github.com/FREVA-CLINT/climatereconstructionAI'),
                 Metadata('Clint Project', 'https://climateintelligence.eu/'),
                 Metadata('HadCRUT on Wikipedia', 'https://en.wikipedia.org/wiki/HadCRUT'),
                 Metadata('HadCRUT4', 'https://www.metoffice.gov.uk/hadobs/hadcrut4/'),
+                Metadata('HadCRUT5', 'https://www.metoffice.gov.uk/hadobs/hadcrut5/'),
                 Metadata('Near Surface Air Temperature',
                          'https://www.atlas.impact2c.eu/en/climate/temperature/?parent_id=22'),
             ],
