@@ -65,5 +65,7 @@ jobs:
             pytest tests
         continue-on-error: false
       - name: Lint with flake8 ⚙️
-        run: make lint
+        run: |
+            source activate duck
+            flake8 duck
         if: matrix.python-version == 3.7
