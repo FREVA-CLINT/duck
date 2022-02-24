@@ -23,3 +23,5 @@ dependencies:
 - xarray>=0.20.2
 - netcdf4>=1.5.8
 - xesmf>=0.6.2
+# plot
+- cartopy
