@@ -50,6 +50,7 @@ def run(dataset, data_type, outdir):
     input_dir = Path(outdir + "/test_large")
     input_dir.mkdir()
     shutil.move(dataset, input_dir)
+    print(f"dataset={dataset}")
     cfg_file = write_clintai_cfg(base_dir=outdir, name=name, data_type=data_type)
     print(f"written cfg {cfg_file}")
     evaluate(cfg_file.as_posix())

@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 
 from pywps import get_ElementMakerForVersion
 from pywps.app.basic import get_xpath_ns
@@ -13,12 +14,16 @@ TESTS_HOME = os.path.abspath(os.path.dirname(__file__))
 
 
 def resource_file(filepath):
-    return os.path.join(TESTS_HOME, "testdata", filepath)
+    p = Path(f"{TESTS_HOME}/testdata/{filepath}")
+    print("test file", p.as_posix())
+    return p.as_posix()
 
 
 TESTDATA = {
-    'tas_hadcrut_small':
-    f"file://{resource_file('tas_hadcrut_187709_189308.nc')}"
+    "tas_hadcrut4_small.nc":
+    f"file://{resource_file('tas_hadcrut_187709_189308.nc')}",
+    "HadCRUT4_anomalies_1.nc":
+    f"file://{resource_file('HadCRUT.4.6.0.0.anomalies.1_to_10_netcdf/HadCRUT.4.6.0.0.anomalies.1.nc')}",
 }
 
 

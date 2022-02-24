@@ -16,6 +16,7 @@ FORMAT_PNG = Format("image/png", extension=".png", encoding="base64")
 
 DATA_TYPES_MAP = {
     "Near Surface Air Temperature": "tas",
+    "Temperature Anomaly": "temperature_anomaly",
 }
 
 
@@ -33,7 +34,10 @@ class ClintAI(Process):
                          min_occurs=1,
                          max_occurs=1,
                          # default='tas',
-                         allowed_values=['Near Surface Air Temperature']),
+                         allowed_values=[
+                            "Near Surface Air Temperature",
+                            "Temperature Anomaly"
+                         ]),
         ]
         outputs = [
             ComplexOutput('output', 'NetCDF Output',
