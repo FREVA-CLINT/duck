@@ -32,7 +32,7 @@ class ClintAI(Process):
             ComplexInput('dataset', 'Add your HadCRUT file here',
                          abstract="Enter a URL pointing to a HadCRUT NetCDF file."
                                   "Example: "
-                                  "https://www.metoffice.gov.uk/hadobs/hadcrut5/data/current/non-infilled/HadCRUT.5.0.1.0.anomalies.ensemble_mean.nc",  # moqa
+                                  "https://www.metoffice.gov.uk/hadobs/hadcrut5/data/current/non-infilled/HadCRUT.5.0.1.0.anomalies.ensemble_mean.nc",  # noqa
                          min_occurs=1,
                          max_occurs=1,
                          supported_formats=[FORMATS.NETCDF, FORMATS.ZIP]),
