@@ -108,3 +108,6 @@ testdata.json
 
 # IDE settings
 .vscode/
+
+# macos
+.DS_Store

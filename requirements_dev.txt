@@ -14,3 +14,4 @@ bump2version
 Click
 cruft
 # Changing dependencies above this comment will create merge conflicts when updating the cookiecutter template with cruft. Add extra requirements below this line.
+requests

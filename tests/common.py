@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 
 from pywps import get_ElementMakerForVersion
 from pywps.app.basic import get_xpath_ns
@@ -9,17 +10,22 @@ WPS, OWS = get_ElementMakerForVersion(VERSION)
 xpath_ns = get_xpath_ns(VERSION)
 
 
+TEST_DATA_CACHE_DIR = Path.home() / ".duck" / "cache" / "testdata"
 TESTS_HOME = os.path.abspath(os.path.dirname(__file__))
 
 
 def resource_file(filepath):
-    return os.path.join(TESTS_HOME, "testdata", filepath)
+    p = Path(f"{TESTS_HOME}/testdata/{filepath}")
+    print("test file", p.as_uri())
+    return p.as_uri()
 
 
-TESTDATA = {
-    'tas_hadcrut_small':
-    f"file://{resource_file('tas_hadcrut_187709_189308.nc')}"
-}
+HADCRUT4_SMALL_NC = resource_file(
+    "tas_hadcrut4/tas_hadcrut4_187709_189308.nc")
+HADCRUT4_SMALL_NC_ZIP = resource_file(
+    "tas_hadcrut4.zip")
+HADCRUT4_ANOMALIES_1_NC = resource_file(
+    "HadCRUT.4.6.0.0.anomalies.1_to_10_netcdf/HadCRUT.4.6.0.0.anomalies.1.nc")
 
 
 class WpsTestClient(WpsClient):
