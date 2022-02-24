@@ -17,7 +17,8 @@ FORMAT_PNG = Format("image/png", extension=".png", encoding="base64")
 
 DATA_TYPES_MAP = {
     "Near Surface Air Temperature": "tas",
-    "Temperature Anomaly": "temperature_anomaly",
+    # "Temperature Anomaly": "temperature_anomaly",
+    "Temperature Mean": "tas_mean",
 }
 
 
@@ -37,7 +38,7 @@ class ClintAI(Process):
                          # default='tas',
                          allowed_values=[
                             "Near Surface Air Temperature",
-                            "Temperature Anomaly"
+                            "Temperature Mean",
                          ]),
             LiteralInput('hadcrut', "HadCRUT version",
                          abstract="Choose HadCRUT version of your dataset.",
