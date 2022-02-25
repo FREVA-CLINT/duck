@@ -1,6 +1,7 @@
 include Makefile
 include *.txt
 include *.rst
+include *.md
 include tox.ini
 recursive-include duck *
 global-exclude __pycache__
