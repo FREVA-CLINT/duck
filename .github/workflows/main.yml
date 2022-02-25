@@ -43,9 +43,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        include:
-          - python-version: 3.7
-            allowed_to_fail: false
+        python-version: ["3.7"]
     steps:
       - uses: actions/checkout@v2
       - name: Setup conda with Python ${{ matrix.python-version }}
@@ -53,10 +51,11 @@ jobs:
         with:
           update-conda: true
           python-version: ${{ matrix.python-version }}
-          conda-channels: conda-forge, defaults
-      - name: Conda env configuration
+          conda-channels: defaults, conda-forge
+      - name: Conda env configuration with mamba
         run: |
-            conda env create -f environment.yml
+            conda install mamba
+            mamba env create -f environment.yml
             source activate duck
             pip install -e ".[dev]"
       - name: Test with conda

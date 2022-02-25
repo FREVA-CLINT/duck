@@ -18,14 +18,14 @@ from duck.processes.wps_clintai import ClintAI
 from duck.clintai import (
     HADCRUT5_TAS_MEAN,
     HADCRUT4_TEMPERATURE_ANOMALY,
-    HADCRUT4_TAS,
 )
 
 
+@pytest.mark.skip(reason="don't use tas variable")
 def test_wps_clintai_hadcrut4_tas_small():
     client = client_for(Service(processes=[ClintAI()]))
     datainputs = f"dataset=@xlink:href={HADCRUT4_SMALL_NC}"
-    datainputs += f";hadcrut={HADCRUT4_TAS}"
+    datainputs += f";hadcrut={HADCRUT4_TEMPERATURE_ANOMALY}"
     resp = client.get(
         f"?service=WPS&request=Execute&version=1.0.0&identifier=clintai&datainputs={datainputs}"
     )
@@ -50,10 +50,11 @@ def test_wps_clintai_hadcrut4_error_wrong_parameter():
     assert_process_exception(resp, code="InvalidParameterValue")
 
 
+@pytest.mark.skip(reason="don't use tas variable")
 def test_wps_clintai_hadcrut4_tas_small_zip():
     client = client_for(Service(processes=[ClintAI()]))
     datainputs = f"dataset=@xlink:href={HADCRUT4_SMALL_NC_ZIP}"
-    datainputs += f";hadcrut={HADCRUT4_TAS}"
+    datainputs += f";hadcrut={HADCRUT4_TEMPERATURE_ANOMALY}"
     resp = client.get(
         f"?service=WPS&request=Execute&version=1.0.0&identifier=clintai&datainputs={datainputs}"
     )
@@ -61,7 +62,6 @@ def test_wps_clintai_hadcrut4_tas_small_zip():
     assert_response_success(resp)
 
 
-@pytest.mark.xfail(reason="ERROR:Inconsistent dimensions in file HadCRUT.4.6.0.0.median.nc")
 @pytest.mark.online
 def test_wps_clintai_hadcrut4_temperature_anomaly():
     client = client_for(Service(processes=[ClintAI()]))

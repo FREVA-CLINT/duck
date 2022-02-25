@@ -13,21 +13,21 @@ DATA_DIR = os.path.join(DUCK_HOME, "data")
 
 HADCRUT5_TAS_MEAN = "HadCRUT5"
 HADCRUT4_TEMPERATURE_ANOMALY = "HadCRUT4"
-HADCRUT4_TAS = "HadCRUT"
+# HADCRUT4_TAS = "HadCRUT"
 
 HADCRUT = collections.OrderedDict({
     HADCRUT5_TAS_MEAN: {
         "variable": "tas_mean",
-        "name": "hadcrut5",
+        "name": "hadcrut",
     },
     HADCRUT4_TEMPERATURE_ANOMALY: {
         "variable": "temperature_anomaly",
-        "name": "hadcrut4",
+        "name": "hadcrut",
     },
-    HADCRUT4_TAS: {
-        "variable": "tas",
-        "name": "hadcrut4",
-    },
+    # HADCRUT4_TAS: {
+    #     "variable": "tas",
+    #     "name": "hadcrut",
+    # },
 })
 
 
