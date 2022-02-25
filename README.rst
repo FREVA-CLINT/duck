@@ -15,6 +15,14 @@ Duck (the bird)
 
 A Demo Web Service for `Clint AI`_.
 
+
+Get Started
+-----------
+
+Check the Quick Guide to install and run the duck:
+
+https://github.com/FREVA-CLINT/duck/blob/main/QuickGuide.md
+
 Documentation
 -------------
 
