@@ -15,6 +15,8 @@ LOGGER = logging.getLogger("PYWPS")
 
 FORMAT_PNG = Format("image/png", extension=".png", encoding="base64")
 
+MEDIA_ROLE = "http://www.opengis.net/spec/wps/2.0/def/process/description/media"
+
 
 class ClintAI(Process):
     def __init__(self):
@@ -54,6 +56,10 @@ class ClintAI(Process):
             version="0.1.0",
             abstract="Fills the gaps in your uploaded climate dataset (HadCRUT).",
             metadata=[
+                Metadata(
+                    title="ClintAI Logo",
+                    href="https://github.com/FREVA-CLINT/duck/raw/main/docs/source/_static/clintai.png",
+                    role=MEDIA_ROLE),
                 Metadata('Clint AI', 'https://github.com/FREVA-CLINT/climatereconstructionAI'),
                 Metadata('Clint Project', 'https://climateintelligence.eu/'),
                 Metadata('HadCRUT on Wikipedia', 'https://en.wikipedia.org/wiki/HadCRUT'),
