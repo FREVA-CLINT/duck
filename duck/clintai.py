@@ -39,15 +39,16 @@ def write_clintai_cfg(base_dir, name, data_type, dataset_name):
     --data-root-dir {{ base_dir }}
     --mask-dir {{ base_dir }}/outputs
     --model-dir {{ data_dir }}
-    --model-names 20cr_20220114.pth
+    --model-names 20crtasgn72.pth
     --evaluation-dirs {{ base_dir }}/outputs
     --img-names {{ name }}
     --data-types {{ data_type }}
     --device cpu --image-sizes 72
+    --n-filters 18
+    --global-padding
     --out-channels 1
     --lstm-steps 0
     --prev-next-steps 0
-    --infill infill
     --eval-names demo
     --plot-results 0
     --dataset-name {{ dataset_name }}
