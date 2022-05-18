@@ -94,7 +94,6 @@ class ClintAI(Process):
             raise ProcessError("Could not extract netcdf file.")
 
         response.update_status('Infilling ...', 20)
-        
         try:
             clintai.run(
                 dataset_0,
