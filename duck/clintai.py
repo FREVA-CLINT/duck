@@ -67,7 +67,6 @@ def write_clintai_cfg(base_dir, name, evalname, data_type, dataset_name):
 
 
 def run(dataset, hadcrut, outdir):
-    print("outdir", outdir, type(dataset.stem))
     data_type = HADCRUT[hadcrut]["variable"]
     dataset_name = HADCRUT[hadcrut]["name"]
     (outdir / "masks").mkdir()
