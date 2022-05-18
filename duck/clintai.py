@@ -34,7 +34,7 @@ HADCRUT = collections.OrderedDict({
 HADCRUT_VALUES = list(HADCRUT.keys())
 
 
-def write_clintai_cfg(base_dir, name, data_type, dataset_name):
+def write_clintai_cfg(base_dir, name, evalname, data_type, dataset_name):
     cfg_templ = """
     --data-root-dir {{ base_dir }}
     --mask-dir {{ base_dir }}/outputs
@@ -49,7 +49,7 @@ def write_clintai_cfg(base_dir, name, data_type, dataset_name):
     --out-channels 1
     --lstm-steps 0
     --prev-next-steps 0
-    --eval-names demo
+    --eval-names {{ evalname }}
     --plot-results 0
     --dataset-name {{ dataset_name }}
     """
@@ -57,6 +57,7 @@ def write_clintai_cfg(base_dir, name, data_type, dataset_name):
         base_dir=base_dir,
         data_dir=DATA_DIR,
         name=name,
+        evalname=evalname,
         data_type=data_type,
         dataset_name=dataset_name)
     out = base_dir / "clintai.cfg"
@@ -66,6 +67,7 @@ def write_clintai_cfg(base_dir, name, data_type, dataset_name):
 
 
 def run(dataset, hadcrut, outdir):
+    print("outdir", outdir, type(dataset.stem))
     data_type = HADCRUT[hadcrut]["variable"]
     dataset_name = HADCRUT[hadcrut]["name"]
     (outdir / "masks").mkdir()
@@ -77,6 +79,7 @@ def run(dataset, hadcrut, outdir):
     cfg_file = write_clintai_cfg(
         base_dir=outdir,
         name=dataset.name,
+        evalname=dataset.stem,
         data_type=data_type,
         dataset_name=dataset_name)
     # print(f"written cfg {cfg_file}")
