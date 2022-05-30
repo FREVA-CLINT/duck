@@ -45,7 +45,6 @@ def write_clintai_cfg(base_dir, name, evalname, data_type, dataset_name):
     --data-types {{ data_type }}
     --device cpu --image-sizes 72
     --n-filters 18
-    --global-padding
     --out-channels 1
     --lstm-steps 0
     --prev-next-steps 0
