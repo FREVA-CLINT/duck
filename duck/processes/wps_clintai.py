@@ -94,7 +94,6 @@ class ClintAI(Process):
             raise ProcessError("Could not extract netcdf file.")
 
         response.update_status('Infilling ...', 20)
-
         try:
             clintai.run(
                 dataset_0,
@@ -103,9 +102,9 @@ class ClintAI(Process):
         except Exception:
             raise ProcessError("Infilling failed.")
 
-        response.outputs["output"].file = workdir / "outputs" / "demo_output_comp.nc"
-        response.outputs["plot_original"].file = workdir / "outputs" / "demo_masked_gt_0.png"
-        response.outputs["plot_infilled"].file = workdir / "outputs" / "demo_output_comp_0.png"
+        response.outputs["output"].file = workdir / "outputs" / str(dataset_0.stem+"_infilled.nc")
+        response.outputs["plot_original"].file = workdir / "outputs" / str(dataset_0.stem+"_masked_gt_0.png")
+        response.outputs["plot_infilled"].file = workdir / "outputs" / str(dataset_0.stem+"_infilled_0.png")
 
         response.update_status('done.', 100)
         return response
