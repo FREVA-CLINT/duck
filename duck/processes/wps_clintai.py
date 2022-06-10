@@ -23,7 +23,7 @@ class ClintAI(Process):
     def __init__(self):
         inputs = [
             ComplexInput('dataset', 'Add your HadCRUT file here',
-                         abstract="Enter a URL pointing to a HadCRUT NetCDF file."
+                         abstract="Enter a URL pointing to a HadCRUT NetCDF file with missing values."
                                   "Example: "
                                   "https://www.metoffice.gov.uk/hadobs/hadcrut5/data/current/non-infilled/HadCRUT.5.0.1.0.anomalies.ensemble_mean.nc",  # noqa
                          min_occurs=1,
@@ -31,8 +31,8 @@ class ClintAI(Process):
                          supported_formats=[FORMATS.NETCDF, FORMATS.ZIP]),
         ]
         outputs = [
-            ComplexOutput('output', 'Infilled HadCRUT output',
-                          abstract='NetCDF output produced by ClintAI.',
+            ComplexOutput('output', 'Reconstructed dataset',
+                          abstract='NetCDF output produced by CRAI.',
                           as_reference=True,
                           supported_formats=[FORMATS.NETCDF]),
             ComplexOutput('plot', 'Plot',
@@ -44,15 +44,15 @@ class ClintAI(Process):
         super(ClintAI, self).__init__(
             self._handler,
             identifier="clintai",
-            title="ClintAI",
+            title="CRAI",
             version="0.1.0",
-            abstract="Fills the gaps in your uploaded climate dataset (HadCRUT).",
+            abstract="AI-enhanced climate service to infill missing values in climate datasets.",
             metadata=[
                 Metadata(
-                    title="ClintAI Logo",
-                    href="https://github.com/FREVA-CLINT/duck/raw/main/docs/source/_static/clintai.png",
+                    title="CRAI Logo",
+                    href="https://github.com/FREVA-CLINT/duck/raw/main/docs/source/_static/crai_logo.png",
                     role=MEDIA_ROLE),
-                Metadata('Clint AI', 'https://github.com/FREVA-CLINT/climatereconstructionAI'),
+                Metadata('CRAI', 'https://github.com/FREVA-CLINT/climatereconstructionAI'),
                 Metadata('Clint Project', 'https://climateintelligence.eu/'),
                 Metadata('HadCRUT on Wikipedia', 'https://en.wikipedia.org/wiki/HadCRUT'),
                 Metadata('HadCRUT4', 'https://www.metoffice.gov.uk/hadobs/hadcrut4/'),

@@ -2,7 +2,7 @@ click
 jinja2
 psutil
 pywps>=4.5.1,<4.6
-# clint ai
+# CRAI
 torch>=1.8.0
 tqdm>=4.59.0
 torchvision>=0.2.1

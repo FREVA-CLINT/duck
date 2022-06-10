@@ -41,7 +41,7 @@ classifiers = [
 
 setup(name='duck',
       version=about['__version__'],
-      description="A Demo Web Service for Clint AI.",
+      description="A Demo Web Service for CRAI.",
       long_description=README + '\n\n' + CHANGES,
       long_description_content_type="text/x-rst",
       author=about['__author__'],
