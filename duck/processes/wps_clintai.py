@@ -2,7 +2,6 @@ from pathlib import Path
 from zipfile import ZipFile
 
 from pywps import Process
-from pywps import LiteralInput
 from pywps import ComplexInput, ComplexOutput
 from pywps import FORMATS, Format
 from pywps.app.Common import Metadata
