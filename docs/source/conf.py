@@ -209,7 +209,7 @@ texinfo_documents = [
         "Duck Documentation",
         author,
         "duck",
-        "A Demo Web Service for Clint AI.",
+        "A Demo Web Service for CRAI.",
         "Miscellaneous",
     ),
 ]

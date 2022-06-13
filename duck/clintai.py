@@ -84,4 +84,4 @@ def run(dataset, hadcrut, outdir):
     try:
         evaluate(cfg_file.as_posix())
     except SystemExit:
-        raise Exception("clintai exited with an error.")
+        raise Exception("CRAI exited with an error.")

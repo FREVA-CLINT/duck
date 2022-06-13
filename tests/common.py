@@ -14,20 +14,9 @@ TEST_DATA_CACHE_DIR = Path.home() / ".duck" / "cache" / "testdata"
 TESTS_HOME = os.path.abspath(os.path.dirname(__file__))
 
 HADCRUT4_URL = "https://www.metoffice.gov.uk/hadobs/hadcrut4/data/current/gridded_fields/"
-HADCRUT4_NC_ZIP = "HadCRUT.4.6.0.0.anomalies.1_to_10_netcdf.zip"
+HADCRUT4_NC_ZIP = "HadCRUT.4.6.0.0.median_netcdf.zip"
 
-
-def resource_file(filepath):
-    p = Path(f"{TESTS_HOME}/testdata/{filepath}")
-    print("test file", p.as_uri())
-    return p.as_uri()
-
-
-HADCRUT4_SMALL_NC = resource_file(
-    "tas_hadcrut4/tas_hadcrut4_187709_189308.nc")
-HADCRUT4_SMALL_NC_ZIP = resource_file(
-    "tas_hadcrut4.zip")
-HADCRUT4_ANOMALIES_1_NC = (TEST_DATA_CACHE_DIR / HADCRUT4_NC_ZIP).as_uri()
+# HADCRUT4_ANOMALIES_1_NC = (TEST_DATA_CACHE_DIR / HADCRUT4_NC_ZIP).as_uri()
 HADCRUT4_TAS_NC_ZIP = "https://www.metoffice.gov.uk/hadobs/hadcrut4/data/current/gridded_fields/HadCRUT.4.6.0.0.median_netcdf.zip"  # noqa
 HadCRUT5_TAS_MEAN_NC = "https://www.metoffice.gov.uk/hadobs/hadcrut5/data/current/non-infilled/HadCRUT.5.0.1.0.anomalies.ensemble_mean.nc"  # noqa
 
