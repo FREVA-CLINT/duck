@@ -16,6 +16,7 @@ LOGGER = logging.getLogger("PYWPS")
 FORMAT_PNG = Format("image/png", extension=".png", encoding="base64")
 
 MEDIA_ROLE = "http://www.opengis.net/spec/wps/2.0/def/process/description/media"
+DEFAULT_ROLE = "http://www.opengis.net/spec/wps/2.0/def/process/description/default"
 
 
 class ClintAI(Process):
@@ -27,7 +28,13 @@ class ClintAI(Process):
                                   "https://www.metoffice.gov.uk/hadobs/hadcrut5/data/current/non-infilled/HadCRUT.5.0.1.0.anomalies.ensemble_mean.nc",  # noqa
                          min_occurs=1,
                          max_occurs=1,
-                         supported_formats=[FORMATS.NETCDF, FORMATS.ZIP]),
+                         supported_formats=[FORMATS.NETCDF, FORMATS.ZIP],
+                         metadata=[
+                            Metadata(
+                                title="Default",
+                                href="https://www.metoffice.gov.uk/hadobs/hadcrut5/data/current/non-infilled/HadCRUT.5.0.1.0.anomalies.ensemble_mean.nc",
+                                role=DEFAULT_ROLE),
+                         ]),
             LiteralInput('hadcrut', "HadCRUT variant",
                          abstract="Choose HadCRUT variant of your dataset.",
                          min_occurs=1,
