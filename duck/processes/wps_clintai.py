@@ -83,10 +83,12 @@ class ClintAI(Process):
         except Exception:
             raise ProcessError("Could not extract netcdf file.")
 
+        print("flag 1", dataset_0)
         ds = xr.open_dataset(dataset_0)
+        print("flag 2", ds)
 
         vars = list(ds.keys())
-        if "tas" in vars:
+        if "temperature_anomaly" in vars:
             hadcrut = "HadCRUT4"
         elif "tas_mean" in vars:
             hadcrut = "HadCRUT5"
