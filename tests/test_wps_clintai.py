@@ -54,7 +54,7 @@ def test_wps_clintai_hadcrut4_temperature_anomaly():
     datainputs = f"dataset=@xlink:href={HADCRUT4_TAS_NC_ZIP}"
     # datainputs += f";hadcrut={HADCRUT4_TEMPERATURE_ANOMALY}"
     resp = client.get(
-        f"?service=WPS&request=Execute&version=1.0.0&identifier=clintai&datainputs={datainputs}"
+        f"?service=WPS&request=Execute&version=1.0.0&identifier=crai&datainputs={datainputs}"
     )
     # print(resp.data)
     assert_response_success(resp)
@@ -66,7 +66,7 @@ def test_wps_clintai_hadcrut5_tas_mean():
     datainputs = f"dataset=@xlink:href={HadCRUT5_TAS_MEAN_NC}"
     datainputs += f";hadcrut={HADCRUT5_TAS_MEAN}"
     resp = client.get(
-        f"?service=WPS&request=Execute&version=1.0.0&identifier=clintai&datainputs={datainputs}"
+        f"?service=WPS&request=Execute&version=1.0.0&identifier=crai&datainputs={datainputs}"
     )
     # print(resp.data)
     assert_response_success(resp)

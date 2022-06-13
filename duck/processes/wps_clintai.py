@@ -23,9 +23,9 @@ class ClintAI(Process):
     def __init__(self):
         inputs = [
             ComplexInput('dataset', 'Add your HadCRUT file here',
-                         abstract="Enter a URL pointing to a HadCRUT NetCDF file with missing values."
-                                  "Example: "
-                                  "https://www.metoffice.gov.uk/hadobs/hadcrut5/data/current/non-infilled/HadCRUT.5.0.1.0.anomalies.ensemble_mean.nc",  # noqa
+                         abstract="Enter a URL pointing to a HadCRUT NetCDF file with missing values.",
+                                  # "Example: "
+                                  # "https://www.metoffice.gov.uk/hadobs/hadcrut5/data/current/non-infilled/HadCRUT.5.0.1.0.anomalies.ensemble_mean.nc",  # noqa
                          min_occurs=1,
                          max_occurs=1,
                          supported_formats=[FORMATS.NETCDF, FORMATS.ZIP]),
@@ -35,7 +35,7 @@ class ClintAI(Process):
                           abstract='NetCDF output produced by CRAI.',
                           as_reference=True,
                           supported_formats=[FORMATS.NETCDF]),
-            ComplexOutput('plot', 'Plot',
+            ComplexOutput('plot', 'Preview of the first time step',
                           # abstract='Plot of original input file. First timestep.',
                           as_reference=True,
                           supported_formats=[FORMAT_PNG]),
@@ -43,7 +43,7 @@ class ClintAI(Process):
 
         super(ClintAI, self).__init__(
             self._handler,
-            identifier="clintai",
+            identifier="crai",
             title="CRAI",
             version="0.1.0",
             abstract="AI-enhanced climate service to infill missing values in climate datasets.",
