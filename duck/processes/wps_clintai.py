@@ -99,8 +99,8 @@ class ClintAI(Process):
                 hadcrut=hadcrut,
                 outdir=workdir,
                 response=response)
-        except Exception:
-            raise ProcessError("Infilling failed.")
+        except Exception as e:
+            raise ProcessError(str(e))
 
         response.outputs["output"].file = workdir / "outputs" / str(dataset_0.stem+"_infilled.nc")
         response.outputs["plot"].file = workdir / "outputs" / str(dataset_0.stem+"_combined_0.png")

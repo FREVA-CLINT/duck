@@ -4,7 +4,7 @@ import shutil
 import collections
 
 from climatereconstructionai import evaluate
-import multiprocessing
+from .utils.multiproc import Process
 import time
 import logging
 LOGGER = logging.getLogger("PYWPS")
@@ -30,7 +30,6 @@ HADCRUT = collections.OrderedDict({
     #     "name": "hadcrut",
     # },
 })
-
 
 HADCRUT_VALUES = list(HADCRUT.keys())
 
@@ -104,12 +103,15 @@ def run(dataset, hadcrut, outdir, response):
         dataset_name=dataset_name)
     # print(f"written cfg {cfg_file}")
     try:
-        prog_thread = multiprocessing.Process(target=prog_func, args=(outdir, response))
+        prog_thread = Process(target=prog_func, args=(outdir, response))
         prog_thread.start()
-        eval_thread = multiprocessing.Process(target=evaluate, args=(cfg_file.as_posix(),))
+        eval_thread = Process(target=evaluate, args=(cfg_file.as_posix(),))
         eval_thread.start()
         eval_thread.join()
         prog_thread.terminate()
+
+        if eval_thread.exception:
+            raise Exception(eval_thread.exception)
 
     except SystemExit:
         raise Exception("CRAI exited with an error.")
