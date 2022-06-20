@@ -64,7 +64,7 @@ def test_wps_clintai_hadcrut4_temperature_anomaly():
 def test_wps_clintai_hadcrut5_tas_mean():
     client = client_for(Service(processes=[ClintAI()]))
     datainputs = f"dataset=@xlink:href={HadCRUT5_TAS_MEAN_NC}"
-    datainputs += f";hadcrut={HADCRUT5_TAS_MEAN}"
+    #datainputs += f";hadcrut={HADCRUT5_TAS_MEAN}"
     resp = client.get(
         f"?service=WPS&request=Execute&version=1.0.0&identifier=crai&datainputs={datainputs}"
     )
