@@ -98,7 +98,7 @@ class ClintAI(Process):
                 dataset_0,
                 hadcrut=hadcrut,
                 outdir=workdir,
-                response=response)
+                update_status=response.update_status)
         except Exception as e:
             raise ProcessError(str(e))
 

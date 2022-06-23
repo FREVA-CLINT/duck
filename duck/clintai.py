@@ -34,18 +34,18 @@ HADCRUT = collections.OrderedDict({
 HADCRUT_VALUES = list(HADCRUT.keys())
 
 
-def prog_func(base_dir, response):
+def prog_func(base_dir, update_status):
     ilimit = 2000
     perc_start = 10
     perc_end = 100 - perc_start
     prog_file = str(base_dir) + "/progfwd.info"
-    response.update_status('Infilling ...', perc_start)
+    update_status('Infilling ...', perc_start)
     for i in range(ilimit):
         try:
             prog_fwd = open(prog_file).readline().strip()
             if prog_fwd != "":
                 val = int(perc_start + perc_end * int(prog_fwd) / 100)
-                response.update_status('Infilling ...', val)
+                update_status('Infilling ...', val)
                 if prog_fwd == "100":
                     break
         except IOError:
@@ -86,7 +86,7 @@ def write_clintai_cfg(base_dir, name, evalname, data_type, dataset_name):
     return out
 
 
-def run(dataset, hadcrut, outdir, response):
+def run(dataset, hadcrut, outdir, update_status):
     data_type = HADCRUT[hadcrut]["variable"]
     dataset_name = HADCRUT[hadcrut]["name"]
     (outdir / "masks").mkdir()
@@ -103,7 +103,7 @@ def run(dataset, hadcrut, outdir, response):
         dataset_name=dataset_name)
     # print(f"written cfg {cfg_file}")
     try:
-        prog_thread = Process(target=prog_func, args=(outdir, response))
+        prog_thread = Process(target=prog_func, args=(outdir, update_status))
         prog_thread.start()
         eval_thread = Process(target=evaluate, args=(cfg_file.as_posix(),))
         eval_thread.start()
