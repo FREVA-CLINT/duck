@@ -68,7 +68,7 @@ class ClintAI(Process):
     def _handler(self, request, response):
         dataset = request.inputs['dataset'][0].file
 
-        response.update_status('Prepare dataset ...', 10)
+        response.update_status('Prepare dataset ...', 0)
         workdir = Path(self.workdir)
 
         if Path(dataset).suffix == ".zip":
@@ -92,14 +92,15 @@ class ClintAI(Process):
         else:
             raise ProcessError("File could not been identified as HadCRUT4/HadCRUT5")
 
-        response.update_status('Infilling ...', 20)
+        # response.update_status('Infilling ...', 20)
         try:
             clintai.run(
                 dataset_0,
                 hadcrut=hadcrut,
-                outdir=workdir)
-        except Exception:
-            raise ProcessError("Infilling failed.")
+                outdir=workdir,
+                update_status=response.update_status)
+        except Exception as e:
+            raise ProcessError(str(e))
 
         response.outputs["output"].file = workdir / "outputs" / str(dataset_0.stem+"_infilled.nc")
         response.outputs["plot"].file = workdir / "outputs" / str(dataset_0.stem+"_combined_0.png")
