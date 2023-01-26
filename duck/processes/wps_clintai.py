@@ -103,7 +103,7 @@ class ClintAI(Process):
             raise ProcessError(str(e))
 
         response.outputs["output"].file = workdir / "outputs" / str(dataset_0.stem+"_infilled.nc")
-        response.outputs["plot"].file = workdir / "outputs" / str(dataset_0.stem+"_combined_0.png")
+        response.outputs["plot"].file = workdir / "outputs" / str(dataset_0.stem+"_combined.1_0.png")
 
         response.update_status('done.', 100)
         return response
