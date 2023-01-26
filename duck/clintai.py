@@ -40,13 +40,11 @@ def write_clintai_cfg(base_dir, name, evalname, data_type, dataset_name):
     --model-dir {{ data_dir }}
     --model-names 20crtasgn72.pth
     --evaluation-dirs {{ base_dir }}/outputs
-    --img-names {{ name }}
+    --data-names {{ name }}
     --data-types {{ data_type }}
-    --device cpu --image-sizes 72
+    --device cpu
     --n-filters 18
     --out-channels 1
-    --lstm-steps 0
-    --prev-next-steps 0
     --eval-names {{ evalname }}
     --plot-results 0
     --dataset-name {{ dataset_name }}
@@ -69,7 +67,7 @@ def run(dataset, hadcrut, outdir, update_status):
     dataset_name = HADCRUT[hadcrut]["name"]
     (outdir / "masks").mkdir()
     (outdir / "outputs").mkdir()
-    input_dir = outdir / "test_large"
+    input_dir = outdir / "test"
     input_dir.mkdir()
     shutil.move(dataset.as_posix(), input_dir.as_posix())
     # print(f"dataset={dataset}")
