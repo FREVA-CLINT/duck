@@ -42,6 +42,7 @@ def write_clintai_cfg(base_dir, name, evalname, data_type, dataset_name):
     --evaluation-dirs {{ base_dir }}/outputs
     --data-names {{ name }}
     --data-types {{ data_type }}
+    --maxmem 5000
     --device cpu
     --n-filters 18
     --out-channels 1
