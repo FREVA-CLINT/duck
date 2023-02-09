@@ -48,6 +48,7 @@ def write_clintai_cfg(base_dir, name, evalname, data_type, dataset_name):
     --out-channels 1
     --eval-names {{ evalname }}
     --plot-results 0
+    --global-padding
     --dataset-name {{ dataset_name }}
     """
     cfg = Template(cfg_templ).render(
