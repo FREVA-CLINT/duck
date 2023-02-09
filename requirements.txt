@@ -4,4 +4,4 @@ psutil
 pywps>=4.5.1,<4.6
 # CRAI
 # climatereconstructionAI>=0.1.0
-climatereconstructionAI @ git+https://github.com/FREVA-CLINT/climatereconstructionAI@main#egg=climatereconstructionAI
+climatereconstructionAI @ git+https://github.com/FREVA-CLINT/climatereconstructionAI@clint#egg=climatereconstructionAI
