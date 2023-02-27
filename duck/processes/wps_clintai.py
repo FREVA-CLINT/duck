@@ -2,11 +2,12 @@ from pathlib import Path
 from zipfile import ZipFile
 
 from pywps import Process
-from pywps import ComplexInput, ComplexOutput
+from pywps import LiteralInput, ComplexInput, ComplexOutput
 from pywps import FORMATS, Format
 from pywps.app.Common import Metadata
 from pywps.app.exceptions import ProcessError
 
+import craimods
 from duck import clintai
 import xarray as xr
 
@@ -17,17 +18,26 @@ FORMAT_PNG = Format("image/png", extension=".png", encoding="base64")
 
 MEDIA_ROLE = "http://www.opengis.net/spec/wps/2.0/def/process/description/media"
 
+models_list = list(craimods.info_models().keys())
 
 class ClintAI(Process):
     def __init__(self):
         inputs = [
-            ComplexInput('dataset', 'Add your HadCRUT file here',
-                         abstract="Enter a URL pointing to a HadCRUT NetCDF file with missing values.",
+            LiteralInput('dataset_name', 'Dataset name', data_type='string',
+                         abstract='Choose the type of dataset to be infilled.',
+                         allowed_values=models_list,
+                         default=models_list[0]),
+            ComplexInput('file', 'Add your NetCDF file with missing values here',
+                         abstract="Enter a URL pointing to a NetCDF file with missing values.",
                                   # "Example: "
                                   # "https://www.metoffice.gov.uk/hadobs/hadcrut5/data/current/non-infilled/HadCRUT.5.0.1.0.anomalies.ensemble_mean.nc",  # noqa
                          min_occurs=1,
                          max_occurs=1,
+                         default="https://www.metoffice.gov.uk/hadobs/hadcrut5/data/current/non-infilled/HadCRUT.5.0.1.0.anomalies.ensemble_mean.nc",
                          supported_formats=[FORMATS.NETCDF, FORMATS.ZIP]),
+            LiteralInput('variable_name', 'Variable name', data_type='string',
+                         abstract='Enter here the variable name to be infilled.',
+                         default='tas_mean'),
         ]
         outputs = [
             ComplexOutput('output', 'Reconstructed dataset',
@@ -66,13 +76,16 @@ class ClintAI(Process):
         )
 
     def _handler(self, request, response):
-        dataset = request.inputs['dataset'][0].file
+        dataset_name = request.inputs['dataset_name'][0].data
+        file = request.inputs['file'][0].file
+        variable_name = request.inputs['variable_name'][0].data
+        print()
 
         response.update_status('Prepare dataset ...', 0)
         workdir = Path(self.workdir)
 
-        if Path(dataset).suffix == ".zip":
-            with ZipFile(dataset, 'r') as zip:
+        if Path(file).suffix == ".zip":
+            with ZipFile(file, 'r') as zip:
                 print("extraction zip file", workdir)
                 zip.extractall(workdir.as_posix())
 
@@ -85,18 +98,15 @@ class ClintAI(Process):
         ds = xr.open_dataset(dataset_0)
 
         vars = list(ds.keys())
-        if "temperature_anomaly" in vars:
-            hadcrut = "HadCRUT4"
-        elif "tas_mean" in vars:
-            hadcrut = "HadCRUT5"
-        else:
-            raise ProcessError("File could not been identified as HadCRUT4/HadCRUT5")
+        if variable_name not in vars:
+            raise ProcessError("Could not find variable {} in dataset.".format(variable_name))
 
         # response.update_status('Infilling ...', 20)
         try:
             clintai.run(
                 dataset_0,
-                hadcrut=hadcrut,
+                dataset_name=dataset_name,
+                variable_name=variable_name,
                 outdir=workdir,
                 update_status=response.update_status)
         except Exception as e:
