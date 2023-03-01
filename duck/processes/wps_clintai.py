@@ -7,7 +7,7 @@ from pywps import FORMATS, Format
 from pywps.app.Common import Metadata
 from pywps.app.exceptions import ProcessError
 
-import craimods
+import craimodels
 from duck import clintai
 import xarray as xr
 
@@ -18,7 +18,7 @@ FORMAT_PNG = Format("image/png", extension=".png", encoding="base64")
 
 MEDIA_ROLE = "http://www.opengis.net/spec/wps/2.0/def/process/description/media"
 
-models_list = list(craimods.info_models().keys())
+models_list = list(craimodels.info_models().keys())
 
 class ClintAI(Process):
     def __init__(self):
