@@ -20,6 +20,7 @@ MEDIA_ROLE = "http://www.opengis.net/spec/wps/2.0/def/process/description/media"
 
 models_list = list(craimodels.info_models().keys())
 
+
 class ClintAI(Process):
     def __init__(self):
         inputs = [
@@ -29,11 +30,9 @@ class ClintAI(Process):
                          default=models_list[0]),
             ComplexInput('file', 'Add your NetCDF file with missing values here',
                          abstract="Enter a URL pointing to a NetCDF file with missing values.",
-                                  # "Example: "
-                                  # "https://www.metoffice.gov.uk/hadobs/hadcrut5/data/current/non-infilled/HadCRUT.5.0.1.0.anomalies.ensemble_mean.nc",  # noqa
                          min_occurs=1,
                          max_occurs=1,
-                         default="https://www.metoffice.gov.uk/hadobs/hadcrut5/data/current/non-infilled/HadCRUT.5.0.1.0.anomalies.ensemble_mean.nc",
+                         default="https://www.metoffice.gov.uk/hadobs/hadcrut5/data/current/non-infilled/HadCRUT.5.0.1.0.anomalies.ensemble_mean.nc", # noqa
                          supported_formats=[FORMATS.NETCDF, FORMATS.ZIP]),
             LiteralInput('variable_name', 'Variable name', data_type='string',
                          abstract='Enter here the variable name to be infilled.',

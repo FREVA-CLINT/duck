@@ -1,4 +1,3 @@
-import os
 from jinja2 import Template
 import shutil
 
@@ -9,6 +8,7 @@ LOGGER = logging.getLogger("PYWPS")
 
 info_models = craimodels.info_models()
 dataset_names = list(info_models.keys())
+
 
 def write_clintai_cfg(base_dir, model_dir, eval_name, data_name, data_type, eval_parameters):
     cfg_templ = """
