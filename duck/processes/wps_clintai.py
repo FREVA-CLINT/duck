@@ -1,5 +1,6 @@
 from pathlib import Path
 from zipfile import ZipFile
+import os
 
 from pywps import Process
 from pywps import LiteralInput, ComplexInput, ComplexOutput
@@ -78,41 +79,61 @@ class ClintAI(Process):
         dataset_name = request.inputs['dataset_name'][0].data
         file = request.inputs['file'][0].file
         variable_name = request.inputs['variable_name'][0].data
-        print()
 
         response.update_status('Prepare dataset ...', 0)
         workdir = Path(self.workdir)
 
+        zipfile = False
         if Path(file).suffix == ".zip":
             with ZipFile(file, 'r') as zip:
                 print("extraction zip file", workdir)
                 zip.extractall(workdir.as_posix())
+                zipfile = True
 
-        # only one dataset file
         try:
-            dataset_0 = list(workdir.rglob('*.nc'))[0]
+            datasets = sorted(workdir.rglob('*.nc'), key=os.path.getmtime)
         except Exception:
             raise ProcessError("Could not extract netcdf file.")
 
-        ds = xr.open_dataset(dataset_0)
+        ndata = len(datasets)
+        if ndata == 0:
+            raise ProcessError("Could not find netcdf files.")
 
-        vars = list(ds.keys())
-        if variable_name not in vars:
-            raise ProcessError("Could not find variable {} in dataset.".format(variable_name))
+        istep = 100 / ndata
+        i = 0
+        for dataset in datasets:
 
-        # response.update_status('Infilling ...', 20)
-        try:
-            clintai.run(
-                dataset_0,
-                dataset_name=dataset_name,
-                variable_name=variable_name,
-                outdir=workdir,
-                update_status=response.update_status)
-        except Exception as e:
-            raise ProcessError(str(e))
+            ds = xr.open_dataset(dataset)
 
-        response.outputs["output"].file = workdir / "outputs" / str(dataset_0.stem+"_infilled.nc")
-        response.outputs["plot"].file = workdir / "outputs" / str(dataset_0.stem+"_combined.1_0.png")
+            vars = list(ds.keys())
+            if variable_name not in vars:
+                raise ProcessError("Could not find variable {} in {}.".format(variable_name, dataset))
+
+            try:
+                clintai.run(
+                    dataset,
+                    dataset_name=dataset_name,
+                    variable_name=variable_name,
+                    outdir=workdir,
+                    update_status=[response.update_status, i, istep])
+            except Exception as e:
+                raise ProcessError(str(e))
+
+            i += 1
+
+        if zipfile:
+            outfile = ".".join(file.split(".")[:-1]) + "_infilled.zip"
+            outfile = workdir / "outputs" / outfile
+            infiles = sorted((workdir / "outputs").rglob('*_infilled.nc'), key=os.path.getmtime)
+
+            with ZipFile(outfile, 'w') as zip:
+                for infile in infiles:
+                    zip.write(infile, arcname=infile.as_posix().split("/")[-1])
+        else:
+            outfile = workdir / "outputs" / str(datasets[0].stem+"_infilled.nc")
+
+        response.outputs["output"].file = outfile
+        response.outputs["plot"].file = workdir / "outputs" / str(datasets[0].stem+"_combined.1_0.png")
 
         response.update_status('done.', 100)
         return response
