@@ -10,6 +10,7 @@ from pywps.app.exceptions import ProcessError
 
 import craimodels
 from duck import clintai
+from duck.provenance import Provenance
 import xarray as xr
 
 import logging
@@ -48,6 +49,20 @@ class ClintAI(Process):
                           # abstract='Plot of original input file. First timestep.',
                           as_reference=True,
                           supported_formats=[FORMAT_PNG]),
+            ComplexOutput(
+                "prov",
+                "Provenance",
+                abstract="Provenance document using W3C standard.",
+                as_reference=True,
+                supported_formats=[FORMATS.JSON],
+            ),
+            ComplexOutput(
+                "prov_plot",
+                "Provenance Diagram",
+                abstract="Provenance document as diagram.",
+                as_reference=True,
+                supported_formats=[FORMAT_PNG],
+            ),
         ]
 
         super(ClintAI, self).__init__(
@@ -82,6 +97,9 @@ class ClintAI(Process):
 
         response.update_status('Prepare dataset ...', 0)
         workdir = Path(self.workdir)
+        # prov
+        prov = Provenance(self.workdir)
+        prov.start(workflow=True)
 
         zipfile = False
         if Path(file).suffix == ".zip":
@@ -110,12 +128,13 @@ class ClintAI(Process):
                 raise ProcessError("Could not find variable {} in {}.".format(variable_name, dataset))
 
             try:
-                clintai.run(
-                    dataset,
-                    dataset_name=dataset_name,
-                    variable_name=variable_name,
-                    outdir=workdir,
-                    update_status=[response.update_status, i, istep])
+                # clintai.run(
+                #     dataset,
+                #     dataset_name=dataset_name,
+                #     variable_name=variable_name,
+                #     outdir=workdir,
+                #     update_status=[response.update_status, i, istep])
+                pass
             except Exception as e:
                 raise ProcessError(str(e))
 
@@ -132,8 +151,20 @@ class ClintAI(Process):
         else:
             outfile = workdir / "outputs" / str(datasets[0].stem+"_infilled.nc")
 
-        response.outputs["output"].file = outfile
-        response.outputs["plot"].file = workdir / "outputs" / str(datasets[0].stem+"_combined.1_0.png")
+        # response.outputs["output"].file = outfile
+        response.outputs["output"].data = "test"
+        # response.outputs["plot"].file = workdir / "outputs" / str(datasets[0].stem+"_combined.1_0.png")
+        response.outputs["plot"].data = "test"
+
+        # prov
+        prov.add_operator(
+            "crai", {}, 
+            [datasets[0].as_posix()], 
+            [f"{datasets[0].as_posix()}_infilled.nc"]
+        )
+        prov.stop()
+        response.outputs["prov"].file = prov.write_json()
+        response.outputs["prov_plot"].file = prov.write_png()
 
         response.update_status('done.', 100)
         return response
