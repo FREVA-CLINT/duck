@@ -111,12 +111,13 @@ class Provenance(object):
         attributes = {}
         for param in [
             "time",
-            "time_components",
             "area",
             "level",
             "dims",
             "freq",
-            "apply_fixes",
+            "dataset_name",
+            "variable_name",
+            "dims"
         ]:
             if param in parameters:
                 value = parameters[param]
