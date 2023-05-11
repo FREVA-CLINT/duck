@@ -50,8 +50,14 @@ class DataStats(object):
         plt.savefig(outfile.as_posix(), dpi=50)
 
         # The following information should be stored in a database
+        attrs = {}
+        orig_attrs = dict(ds.attrs)
+        for key in orig_attrs:
+            value = isinstance(orig_attrs[key], str):
+            attrs[key] = value
+
         self.info = {}
-        self.info["Attrs"] = dict(ds.attrs)
+        self.info["Attrs"] = attrs
         self.info["Dims"] = dict(ds.dims)
         self.info["Vars"] = list(dict(ds.variables).keys())
         # print(vstats)
