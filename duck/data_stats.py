@@ -53,8 +53,9 @@ class DataStats(object):
         attrs = {}
         orig_attrs = dict(ds.attrs)
         for key in orig_attrs:
-            value = isinstance(orig_attrs[key], str):
-            attrs[key] = value
+            value = orig_attrs[key]
+            if isinstance(value, str):
+                attrs[key] = value
 
         self.info = {}
         self.info["Attrs"] = attrs
