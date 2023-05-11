@@ -12,7 +12,7 @@ from pywps.app.exceptions import ProcessError
 import craimodels
 from duck import clintai
 from duck.provenance import Provenance
-from duck.data_stats import gen_data_stats
+from duck.data_stats import DataStats
 
 import logging
 LOGGER = logging.getLogger("PYWPS")
@@ -172,9 +172,10 @@ class ClintAI(Process):
         response.outputs["plot"].data = "test"
 
         # stats
-        stats = gen_data_stats(datasets[0].as_posix(), variable_name)
-        response.outputs["info"].file = stats["info"]
-        # response.outputs["hist"].file = stats["hist"]
+        datastats = DataStats(self.workdir)
+        datastats.gen_data_stats(datasets[0].as_posix(), variable_name, with_hist=False)
+        response.outputs["info"].file = datastats.write_json()
+        # response.outputs["hist"].file = datastats.write_png()
         response.outputs["hist"].data = "test"
 
         # prov
