@@ -40,10 +40,10 @@ def write_clintai_cfg(base_dir, model_dir, eval_name, data_name, data_type, eval
 
 def run(dataset, dataset_name, variable_name, outdir, update_status):
     # data_type = info_models[dataset_name]["variable-name"]
-    (outdir / "masks").mkdir()
-    (outdir / "outputs").mkdir()
+    (outdir / "masks").mkdir(exist_ok=True)
+    (outdir / "outputs").mkdir(exist_ok=True)
     input_dir = outdir / "test"
-    input_dir.mkdir()
+    input_dir.mkdir(exist_ok=True)
     shutil.move(dataset.as_posix(), input_dir.as_posix())
     # print(f"dataset={dataset}")
     cfg_file = write_clintai_cfg(
