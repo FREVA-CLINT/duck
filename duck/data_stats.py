@@ -51,7 +51,7 @@ class DataStats(object):
 
         # The following information should be stored in a database
         self.info = {}
-        self.info["Attrs"] = str(ds.attrs)
+        self.info["Attrs"] = dict(ds.attrs)
         self.info["Dims"] = dict(ds.dims)
         self.info["Vars"] = list(dict(ds.variables).keys())
         # print(vstats)
@@ -59,9 +59,9 @@ class DataStats(object):
         self.info["Mstats"] = get_stats(mratio)
     
     def write_json(self):
-        outfile = self.output_dir / "info.json"
+        outfile = self.output_dir / "info.yaml"
         with open(outfile.as_posix(), "w") as f:
-            yaml.safe_dump(self.info, f)
+            yaml.dump(self.info, f)
         return outfile
     
     def write_png(self):
