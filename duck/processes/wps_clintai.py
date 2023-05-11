@@ -1,6 +1,7 @@
 from pathlib import Path
 from zipfile import ZipFile
 import os
+import xarray as xr
 
 from pywps import Process
 from pywps import LiteralInput, ComplexInput, ComplexOutput
@@ -11,7 +12,7 @@ from pywps.app.exceptions import ProcessError
 import craimodels
 from duck import clintai
 from duck.provenance import Provenance
-import xarray as xr
+from duck.data_stats import gen_data_stats
 
 import logging
 LOGGER = logging.getLogger("PYWPS")
@@ -60,6 +61,20 @@ class ClintAI(Process):
                 "prov_plot",
                 "Provenance Diagram",
                 abstract="Provenance document as diagram.",
+                as_reference=True,
+                supported_formats=[FORMAT_PNG],
+            ),
+            ComplexOutput(
+                "info",
+                "Data Statistics",
+                abstract="Data Statistics of input file.",
+                as_reference=True,
+                supported_formats=[FORMATS.JSON],
+            ),
+            ComplexOutput(
+                "hist",
+                "Histogram ",
+                abstract="Histogram of input file.",
                 as_reference=True,
                 supported_formats=[FORMAT_PNG],
             ),
@@ -156,8 +171,13 @@ class ClintAI(Process):
         # response.outputs["plot"].file = workdir / "outputs" / str(datasets[0].stem+"_combined.1_0.png")
         response.outputs["plot"].data = "test"
 
+        # stats
+        stats = gen_data_stats(datasets[0].as_posix(), variable_name)
+        response.outputs["info"].file = stats["info"]
+        # response.outputs["hist"].file = stats["hist"]
+        response.outputs["hist"].data = "test"
+
         # prov
-        # ds = xr.open_dataset(datasets[0])
         prov.add_operator(
             "crai", 
             {
