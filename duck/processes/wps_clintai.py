@@ -131,7 +131,14 @@ class ClintAI(Process):
         ndata = len(datasets)
         if ndata == 0:
             raise ProcessError("Could not find netcdf files.")
+        
+        # stats
+        datastats = DataStats(self.workdir)
+        datastats.gen_data_stats(datasets[0].as_posix(), variable_name)
+        response.outputs["info"].file = datastats.write_json()
+        response.outputs["hist"].file = datastats.write_png()
 
+        # run crai
         istep = 100 / ndata
         i = 0
         for dataset in datasets:
@@ -170,13 +177,6 @@ class ClintAI(Process):
         response.outputs["output"].data = "test"
         # response.outputs["plot"].file = workdir / "outputs" / str(datasets[0].stem+"_combined.1_0.png")
         response.outputs["plot"].data = "test"
-
-        # stats
-        datastats = DataStats(self.workdir)
-        datastats.gen_data_stats(datasets[0].as_posix(), variable_name, with_hist=False)
-        response.outputs["info"].file = datastats.write_json()
-        # response.outputs["hist"].file = datastats.write_png()
-        response.outputs["hist"].data = "test"
 
         # prov
         prov.add_operator(

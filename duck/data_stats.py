@@ -22,7 +22,7 @@ class DataStats(object):
         self.info = None
 
    
-    def gen_data_stats(self, filename, var, nbins=100, with_hist=True):
+    def gen_data_stats(self, filename, var, nbins=100):
         ds = xr.open_dataset(filename)
 
         vstats = get_stats(ds[var].values)
@@ -41,21 +41,20 @@ class DataStats(object):
         mratio = 1 - mratio / (nlon * nlat)
 
         # TODO: It would be great to store the distribution graph in a database
-        if with_hist:
-            plt.imshow(hist, aspect="auto", origin='lower', extent=[vstats["min"], vstats["max"], 0, ntime], cmap="gist_ncar")
-            ax = plt.gca()
-            ax.grid(color='gray', linestyle='-.', linewidth=1)
-            plt.xlabel(var)
-            plt.ylabel("Timesteps")
-            outfile = self.output_dir / "histime.png"
-            plt.savefig(outfile.as_posix(), dpi=50)
+        plt.imshow(hist, aspect="auto", origin='lower', extent=[vstats["min"], vstats["max"], 0, ntime], cmap="gist_ncar")
+        ax = plt.gca()
+        ax.grid(color='gray', linestyle='-.', linewidth=1)
+        plt.xlabel(var)
+        plt.ylabel("Timesteps")
+        outfile = self.output_dir / "histime.png"
+        plt.savefig(outfile.as_posix(), dpi=50)
 
         # The following information should be stored in a database
         self.info = {}
-        self.info["Attrs"] = dict(ds.attrs)
+        self.info["Attrs"] = str(ds.attrs)
         self.info["Dims"] = dict(ds.dims)
-        # self.info["Vars"] = ds.variables
-        print(vstats)
+        self.info["Vars"] = list(dict(ds.variables).keys())
+        # print(vstats)
         self.info["Vstats"] = vstats
         self.info["Mstats"] = get_stats(mratio)
     
