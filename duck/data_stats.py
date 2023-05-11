@@ -59,7 +59,7 @@ class DataStats(object):
         self.info["Mstats"] = get_stats(mratio)
     
     def write_json(self):
-        outfile = self.output_dir / "info.yaml"
+        outfile = self.output_dir / "info.txt"
         with open(outfile.as_posix(), "w") as f:
             yaml.dump(self.info, f)
         return outfile
