@@ -5,7 +5,12 @@ import yaml
 import pathlib
 
 def get_stats(data):
-    return {"min": np.nanmin(data), "max": np.nanmax(data), "mean": np.nanmean(data), "std": np.nanstd(data)}
+    return {
+        "min": float(np.nanmin(data)), 
+        "max": float(np.nanmax(data)), 
+        "mean": float(np.nanmean(data)), 
+        "std": float(np.nanstd(data))
+    }
 
 
 class DataStats(object):
@@ -47,11 +52,12 @@ class DataStats(object):
 
         # The following information should be stored in a database
         self.info = {}
-        self.info["Attrs"] = str(ds.attrs)
-        self.info["Dims"] = str(ds.dims)
-        self.info["Vars"] = str(ds.variables)
-        self.info["Vstats"] = str(vstats)
-        self.info["Mstats"] = str(get_stats(mratio))
+        self.info["Attrs"] = dict(ds.attrs)
+        self.info["Dims"] = dict(ds.dims)
+        # self.info["Vars"] = ds.variables
+        print(vstats)
+        self.info["Vstats"] = vstats
+        self.info["Mstats"] = get_stats(mratio)
     
     def write_json(self):
         outfile = self.output_dir / "info.json"
