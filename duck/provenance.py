@@ -117,7 +117,6 @@ class Provenance(object):
             "freq",
             "dataset_name",
             "variable_name",
-            "dims"
         ]:
             if param in parameters:
                 value = parameters[param]

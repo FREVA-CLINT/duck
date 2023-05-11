@@ -157,13 +157,12 @@ class ClintAI(Process):
         response.outputs["plot"].data = "test"
 
         # prov
-        ds = xr.open_dataset(datasets[0])
+        # ds = xr.open_dataset(datasets[0])
         prov.add_operator(
             "crai", 
             {
                 "dataset_name": dataset_name,
                 "variable_name": variable_name,
-                "dims": str(dict(ds.dims))
             }, 
             [datasets[0].as_posix()], 
             [f"{datasets[0].as_posix()}_infilled.nc"]
