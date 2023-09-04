@@ -50,34 +50,6 @@ class ClintAI(Process):
                           # abstract='Plot of original input file. First timestep.',
                           as_reference=True,
                           supported_formats=[FORMAT_PNG]),
-            ComplexOutput(
-                "prov",
-                "Provenance",
-                abstract="Provenance document using W3C standard.",
-                as_reference=True,
-                supported_formats=[FORMATS.JSON],
-            ),
-            ComplexOutput(
-                "prov_plot",
-                "Provenance Diagram",
-                abstract="Provenance document as diagram.",
-                as_reference=True,
-                supported_formats=[FORMAT_PNG],
-            ),
-            ComplexOutput(
-                "info",
-                "Data Statistics",
-                abstract="Data Statistics of input file.",
-                as_reference=True,
-                supported_formats=[FORMATS.JSON],
-            ),
-            ComplexOutput(
-                "hist",
-                "Histogram ",
-                abstract="Histogram of input file.",
-                as_reference=True,
-                supported_formats=[FORMAT_PNG],
-            ),
         ]
 
         super(ClintAI, self).__init__(
@@ -107,15 +79,15 @@ class ClintAI(Process):
 
     def _handler(self, request, response):
         dataset_name = request.inputs['dataset_name'][0].data
+        print(f"{dataset_name}")
         file = request.inputs['file'][0].file
+        print(f"{file}")
         variable_name = request.inputs['variable_name'][0].data
+        print(f"{variable_name}")
 
         response.update_status('Prepare dataset ...', 0)
         workdir = Path(self.workdir)
-        # prov
-        prov = Provenance(self.workdir)
-        prov.start(workflow=True)
-
+       
         zipfile = False
         if Path(file).suffix == ".zip":
             with ZipFile(file, 'r') as zip:
@@ -134,9 +106,9 @@ class ClintAI(Process):
         
         # stats
         datastats = DataStats(self.workdir)
-        datastats.gen_data_stats(datasets[0].as_posix(), variable_name)
-        response.outputs["info"].file = datastats.write_json()
-        response.outputs["hist"].file = datastats.write_png()
+        # datastats.gen_data_stats(datasets[0].as_posix(), variable_name)
+        # response.outputs["info"].file = datastats.write_json()
+        # response.outputs["hist"].file = datastats.write_png()
 
         # run crai
         istep = 100 / ndata
@@ -173,11 +145,10 @@ class ClintAI(Process):
             outfile = workdir / "outputs" / str(datasets[0].stem+"_infilled.nc")
 
         response.outputs["output"].file = outfile
-        # response.outputs["output"].data = "test"
         response.outputs["plot"].file = workdir / "outputs" / str(datasets[0].stem+"_combined.1_0.png")
-        # response.outputs["plot"].data = "test"
 
         # prov
+        prov = Provenance(self.workdir)
         prov.add_operator(
             "crai", 
             {
@@ -187,9 +158,9 @@ class ClintAI(Process):
             [datasets[0].as_posix()], 
             [f"{datasets[0].as_posix()}_infilled.nc"]
         )
-        prov.stop()
-        response.outputs["prov"].file = prov.write_json()
-        response.outputs["prov_plot"].file = prov.write_png()
+        prov.store_rdf()
+        # prov end
+
 
         response.update_status('done.', 100)
         return response

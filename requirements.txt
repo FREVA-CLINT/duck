@@ -9,3 +9,7 @@ climatereconstructionAI @ git+https://github.com/FREVA-CLINT/climatereconstructi
 # provenance
 prov>=2.0.0
 pydot
+rdflib
+rdflib-sqlalchemy
+sqlalchemy<2
+pandas

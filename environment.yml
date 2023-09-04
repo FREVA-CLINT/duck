@@ -33,3 +33,7 @@ dependencies:
 - prov>=2.0.0
 - pydot
 - graphviz
+- rdflib
+- rdflib-sqlalchemy
+- sqlalchemy<2
+- pandas
