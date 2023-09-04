@@ -2,7 +2,7 @@ from rdflib import Graph, URIRef
 from rdflib.plugins.sparql import prepareQuery
 
 # Provide the path to the SQLite database in the local folder
-DB_URL = "sqlite:///provenance.db"
+DB_URL = "sqlite:///provenance.sqlite"
 
 class GraphDB(object):
     def __init__(self):
