@@ -1,6 +1,7 @@
 from pathlib import Path
 from zipfile import ZipFile
 import os
+from datetime import datetime
 import xarray as xr
 
 from pywps import Process
@@ -78,6 +79,8 @@ class ClintAI(Process):
         )
 
     def _handler(self, request, response):
+        start_time = datetime.now().isoformat(timespec="seconds")
+
         dataset_name = request.inputs['dataset_name'][0].data
         print(f"{dataset_name}")
         file = request.inputs['file'][0].file
@@ -105,7 +108,7 @@ class ClintAI(Process):
             raise ProcessError("Could not find netcdf files.")
         
         # stats
-        datastats = DataStats(self.workdir)
+        # datastats = DataStats(self.workdir)
         # datastats.gen_data_stats(datasets[0].as_posix(), variable_name)
         # response.outputs["info"].file = datastats.write_json()
         # response.outputs["hist"].file = datastats.write_png()
@@ -148,15 +151,21 @@ class ClintAI(Process):
         response.outputs["plot"].file = workdir / "outputs" / str(datasets[0].stem+"_combined.1_0.png")
 
         # prov
+        end_time = datetime.now().isoformat(timespec="seconds")
         prov = Provenance(self.workdir)
         prov.add_operator(
             "crai", 
             {
                 "dataset_name": dataset_name,
                 "variable_name": variable_name,
+                "min": 10,
+                "max": 20,
+                "stddev": 2,
             }, 
             [datasets[0].as_posix()], 
-            [f"{datasets[0].as_posix()}_infilled.nc"]
+            [f"{datasets[0].as_posix()}_infilled.nc"],
+            start_time,
+            end_time,
         )
         prov.store_rdf()
         # prov end
