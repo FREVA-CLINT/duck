@@ -2,6 +2,7 @@ from pathlib import Path
 from zipfile import ZipFile
 import os
 from datetime import datetime
+import json
 import xarray as xr
 
 from pywps import Process
@@ -177,6 +178,7 @@ class ClintAI(Process):
                 "max": stats["max"],
                 "mean": stats["mean"],
                 "stddev": stats["std"],
+                "info": json.dumps(datastats.info, separators=(',', ':')),
             }, 
             [datasets[0].as_posix()], 
             [f"{datasets[0].as_posix()}_infilled.nc"],

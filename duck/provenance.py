@@ -94,6 +94,7 @@ class Provenance(object):
             "max",
             "stddev",
             "mean",
+            "info",
             "dataset_name",
             "variable_name",
         ]:

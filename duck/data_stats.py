@@ -62,9 +62,10 @@ class DataStats(object):
         self.info["Attrs"] = attrs
         self.info["Dims"] = dict(ds.dims)
         self.info["Vars"] = list(dict(ds.variables).keys())
-        # print(vstats)
         self.info["Vstats"] = vstats
         self.info["Mstats"] = get_stats(mratio)
+        # self.info["Hist"] = hist
+        print(self.info)
     
     def write_json(self):
         outfile = self.output_dir / "info.txt"
