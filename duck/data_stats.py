@@ -41,13 +41,14 @@ class DataStats(object):
         mratio = 1 - mratio / (nlon * nlat)
 
         # TODO: It would be great to store the distribution graph in a database
-        plt.imshow(hist, aspect="auto", origin='lower', extent=[vstats["min"], vstats["max"], 0, ntime], cmap="gist_ncar")
-        ax = plt.gca()
-        ax.grid(color='gray', linestyle='-.', linewidth=1)
-        plt.xlabel(var)
-        plt.ylabel("Timesteps")
-        outfile = self.output_dir / "histime.png"
-        plt.savefig(outfile.as_posix(), dpi=50)
+        if False:
+            plt.imshow(hist, aspect="auto", origin='lower', extent=[vstats["min"], vstats["max"], 0, ntime], cmap="gist_ncar")
+            ax = plt.gca()
+            ax.grid(color='gray', linestyle='-.', linewidth=1)
+            plt.xlabel(var)
+            plt.ylabel("Timesteps")
+            outfile = self.output_dir / "histime.png"
+            plt.savefig(outfile.as_posix(), dpi=50)
 
         # The following information should be stored in a database
         attrs = {}

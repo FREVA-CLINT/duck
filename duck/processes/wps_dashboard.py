@@ -1,14 +1,22 @@
 from pathlib import Path
 
-from pywps import Process, ComplexOutput, Format
+from pywps import Process, LiteralInput, ComplexOutput, Format
 
 from duck import query
 
 class Dashboard(Process):
     def __init__(self):
-        # inputs = [
-        #     ComplexInput('input_csv', 'CSV File', supported_formats=[Format('text/csv')]),
-        # ]
+        inputs = [
+            LiteralInput(
+                "time",
+                "Time Period",
+                abstract="The time period for the report seperated by /"
+                "Example: 2023-09-01/2023-09-30",
+                data_type="string",
+                min_occurs=0,
+                max_occurs=1,
+            ),
+        ]
         outputs = [
             ComplexOutput(
                 'report', 
@@ -24,7 +32,7 @@ class Dashboard(Process):
             title='Generate HTML Report',
             version='1.0',
             abstract='Generate an HTML report from a provenance database.',
-            # inputs=inputs,
+            inputs=inputs,
             outputs=outputs,
         )
 

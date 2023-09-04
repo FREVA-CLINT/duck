@@ -25,6 +25,18 @@ MEDIA_ROLE = "http://www.opengis.net/spec/wps/2.0/def/process/description/media"
 models_list = list(craimodels.info_models().keys())
 
 
+def dummy(workdir, datasets):
+    outputs_path =  workdir / "outputs" 
+    outputs_path.mkdir()
+    outfile = workdir / "outputs" / str(datasets[0].stem+"_infilled.nc")
+    print(outfile)
+    with outfile.open(mode='w') as file:
+        file.write("dummy\n")
+    plotfile = workdir / "outputs" / str(datasets[0].stem+"_combined.1_0.png")
+    print(plotfile)
+    with plotfile.open(mode='w') as file:
+        file.write("dummy plot\n")
+
 class ClintAI(Process):
     def __init__(self):
         inputs = [
@@ -107,14 +119,8 @@ class ClintAI(Process):
         if ndata == 0:
             raise ProcessError("Could not find netcdf files.")
         
-        # stats
-        # datastats = DataStats(self.workdir)
-        # datastats.gen_data_stats(datasets[0].as_posix(), variable_name)
-        # response.outputs["info"].file = datastats.write_json()
-        # response.outputs["hist"].file = datastats.write_png()
-
         # run crai
-        istep = 100 / ndata
+        # istep = 100 / ndata
         i = 0
         for dataset in datasets:
 
@@ -126,17 +132,9 @@ class ClintAI(Process):
 
             try:
                 # dummy start
-                outputs_path =  workdir / "outputs" 
-                outputs_path.mkdir()
-                outfile = workdir / "outputs" / str(datasets[0].stem+"_infilled.nc")
-                print(outfile)
-                with outfile.open(mode='w') as file:
-                    file.write("dummy\n")
-                plotfile = workdir / "outputs" / str(datasets[0].stem+"_combined.1_0.png")
-                print(plotfile)
-                with plotfile.open(mode='w') as file:
-                    file.write("dummy plot\n")
-                # dummy end
+                dummy(workdir, datasets)
+                # end
+
                 # clintai.run(
                 #     dataset,
                 #     dataset_name=dataset_name,
@@ -162,6 +160,11 @@ class ClintAI(Process):
         response.outputs["output"].file = outfile
         response.outputs["plot"].file = workdir / "outputs" / str(datasets[0].stem+"_combined.1_0.png")
 
+        # stats
+        datastats = DataStats(self.workdir)
+        datastats.gen_data_stats(datasets[0].as_posix(), variable_name)
+        stats = datastats.info["Mstats"]
+
         # prov
         end_time = datetime.now().isoformat(timespec="seconds")
         prov = Provenance(self.workdir)
@@ -170,9 +173,10 @@ class ClintAI(Process):
             {
                 "dataset_name": dataset_name,
                 "variable_name": variable_name,
-                "min": 10,
-                "max": 20,
-                "stddev": 2,
+                "min": stats["min"],
+                "max": stats["max"],
+                "mean": stats["mean"],
+                "stddev": stats["std"],
             }, 
             [datasets[0].as_posix()], 
             [f"{datasets[0].as_posix()}_infilled.nc"],

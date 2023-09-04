@@ -4,7 +4,7 @@ import pandas as pd
 
 def query():
     query_str = """
-        SELECT ?process ?dataset ?variable ?startTime ?endTime ?input ?output ?min ?max ?stddev
+        SELECT ?process ?dataset ?variable ?startTime ?endTime ?input ?output ?min ?max ?mean ?stddev
         WHERE {
             ?exec rdf:type provone:Execution ;
                 rdfs:label ?process ;
@@ -14,6 +14,7 @@ def query():
                 prov:endedAtTime ?endTime ;
                 clint:min ?min ;
                 clint:max ?max ;
+                clint:mean ?mean ;
                 clint:stddev ?stddev .
 
             ?input rdf:type prov:Entity .
@@ -39,6 +40,7 @@ def query():
         output = output.split("urn:clint:")[-1]
         min = row.min.value
         max = row.max.value
+        mean = row.mean.value
         stddev = row.stddev.value
         data.append({
             "Process": process, 
@@ -50,6 +52,7 @@ def query():
             "Output": output,
             "Min": min,
             "Max": max,
+            "Mean": mean,
             "StdDev": stddev,
         })
     df = pd.DataFrame(data)
