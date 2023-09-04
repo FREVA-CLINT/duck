@@ -111,3 +111,6 @@ testdata.json
 
 # macos
 .DS_Store
+
+# provenance
+provenance.db

@@ -125,12 +125,24 @@ class ClintAI(Process):
                 raise ProcessError("Could not find variable {} in {}.".format(variable_name, dataset))
 
             try:
-                clintai.run(
-                    dataset,
-                    dataset_name=dataset_name,
-                    variable_name=variable_name,
-                    outdir=workdir,
-                    update_status=[response.update_status, i, istep])
+                # dummy start
+                outputs_path =  workdir / "outputs" 
+                outputs_path.mkdir()
+                outfile = workdir / "outputs" / str(datasets[0].stem+"_infilled.nc")
+                print(outfile)
+                with outfile.open(mode='w') as file:
+                    file.write("dummy\n")
+                plotfile = workdir / "outputs" / str(datasets[0].stem+"_combined.1_0.png")
+                print(plotfile)
+                with plotfile.open(mode='w') as file:
+                    file.write("dummy plot\n")
+                # dummy end
+                # clintai.run(
+                #     dataset,
+                #     dataset_name=dataset_name,
+                #     variable_name=variable_name,
+                #     outdir=workdir,
+                #     update_status=[response.update_status, i, istep])
             except Exception as e:
                 raise ProcessError(str(e))
 
