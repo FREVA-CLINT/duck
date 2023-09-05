@@ -13,4 +13,5 @@ def test_wps_caps():
                             '/ows:Identifier')
     assert sorted(names.split()) == [
         'crai',
+        'dashboard',
     ]
