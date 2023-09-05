@@ -4,6 +4,7 @@ from pywps import Process, LiteralInput, ComplexOutput, Format
 
 from duck import query
 
+
 class Dashboard(Process):
     def __init__(self):
         inputs = [

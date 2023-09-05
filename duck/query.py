@@ -1,19 +1,19 @@
 from duck.db import GraphDB
 import pandas as pd
-import base64
-from PIL import Image
-import io
 import json
 import yaml
 
+
 def display_image(base64_image):
-    img_data = base64.b64decode(base64_image)
-    img = Image.open(io.BytesIO(img_data))
+    # img_data = base64.b64decode(base64_image)
+    # img = Image.open(io.BytesIO(img_data))
     return '<img src="data:image/png;base64,{}" width="200"/>'.format(base64_image)
+
 
 def display_json(data):
     content = yaml.dump(data, default_flow_style=True, indent=2)
     return f"<pre>{content}</pre>"
+
 
 def query():
     query_str = """
@@ -53,10 +53,10 @@ def query():
         input = input.split("urn:clint:")[-1]
         output = row.output.split("/")[-1]
         output = output.split("urn:clint:")[-1]
-        min = row.min.value
-        max = row.max.value
-        mean = row.mean.value
-        stddev = row.stddev.value
+        # min = row.min.value
+        # max = row.max.value
+        # mean = row.mean.value
+        # stddev = row.stddev.value
         info = json.loads(row.info.value)
         histogram = row.histogram.value
         entry = {

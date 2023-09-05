@@ -6,8 +6,6 @@ import pathlib
 import io
 import base64
 
-# import matplotlib
-# matplotlib.use('agg')
 
 def get_stats(data):
     return {

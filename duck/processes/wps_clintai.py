@@ -5,9 +5,6 @@ from datetime import datetime
 import json
 import xarray as xr
 
-import matplotlib
-matplotlib.use('agg')
-
 from pywps import Process
 from pywps import LiteralInput, ComplexInput, ComplexOutput
 from pywps import FORMATS, Format
@@ -20,6 +17,10 @@ from duck.provenance import Provenance
 from duck.data_stats import DataStats
 
 import logging
+
+import matplotlib
+matplotlib.use('agg')
+
 LOGGER = logging.getLogger("PYWPS")
 
 FORMAT_PNG = Format("image/png", extension=".png", encoding="base64")
@@ -28,18 +29,6 @@ MEDIA_ROLE = "http://www.opengis.net/spec/wps/2.0/def/process/description/media"
 
 models_list = list(craimodels.info_models().keys())
 
-
-def dummy(workdir, datasets):
-    outputs_path =  workdir / "outputs" 
-    outputs_path.mkdir()
-    outfile = workdir / "outputs" / str(datasets[0].stem+"_infilled.nc")
-    print(outfile)
-    with outfile.open(mode='w') as file:
-        file.write("dummy\n")
-    plotfile = workdir / "outputs" / str(datasets[0].stem+"_combined.1_0.png")
-    print(plotfile)
-    with plotfile.open(mode='w') as file:
-        file.write("dummy plot\n")
 
 class ClintAI(Process):
     def __init__(self):
@@ -135,10 +124,6 @@ class ClintAI(Process):
                 raise ProcessError("Could not find variable {} in {}.".format(variable_name, dataset))
 
             try:
-                # dummy start
-                # dummy(workdir, datasets)
-                # end
-
                 clintai.run(
                     dataset,
                     dataset_name=dataset_name,
