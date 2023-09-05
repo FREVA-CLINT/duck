@@ -63,7 +63,7 @@ class DataStats(object):
 
             # Encode the BytesIO object as base64
             base64_encoded_plot = base64.b64encode(buffer.read()).decode('utf-8')
-            print(f"{base64_encoded_plot}")
+            # print(f"{base64_encoded_plot}")
             self.histogram = base64_encoded_plot
             # close plot
             plt.close()
