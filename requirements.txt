@@ -13,3 +13,4 @@ rdflib
 rdflib-sqlalchemy
 sqlalchemy<2
 pandas
+pyyaml
