@@ -9,8 +9,8 @@ class GraphDB(object):
     def __init__(self):
         # Create a graph with a specific backend store
         self.graph = Graph(
-            store="SQLAlchemy", 
-            identifier=URIRef("http://example.org/graph"))
+            store="SQLAlchemy", identifier=URIRef("http://example.org/graph")
+        )
         self.graph.open(DB_URL, create=True)
 
     def add(self, data):
@@ -31,10 +31,8 @@ class GraphDB(object):
             "prov": "http://www.w3.org/ns/prov#",
             "provone": "http://purl.dataone.org/provone/2015/01/15/ontology#",
             "dcterms": "http://purl.org/dc/terms/",
-            "clint": "urn:clint:"
+            "clint": "urn:clint:",
         }
         query = prepareQuery(query_str, initNs=namespaces)
         results = self.graph.query(query)
         return results
-
-    

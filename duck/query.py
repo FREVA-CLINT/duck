@@ -33,11 +33,11 @@ def query():
                 clint:histogram ?histogram .
 
             ?input rdf:type prov:Entity .
-        
+
             ?output rdf:type prov:Entity ;
                 prov:qualifiedDerivation [ prov:entity ?input; prov:hadActivity ?exec ] .
     }
-    """
+    """  # noqa
     graph_db = GraphDB()
     results = graph_db.query(query_str)
 
@@ -60,10 +60,10 @@ def query():
         info = json.loads(row.info.value)
         histogram = row.histogram.value
         entry = {
-            "Process": process, 
+            "Process": process,
             "Dataset": dataset,
-            "Variable": variable, 
-            "Start Time": start_time, 
+            "Variable": variable,
+            "Start Time": start_time,
             "End Time": end_time,
             "Input": input,
             "Output": output,

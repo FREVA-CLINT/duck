@@ -108,7 +108,7 @@ class Provenance(object):
             label=operator,
             attributes=attributes,
             start=start,
-            end=end
+            end=end,
         )
         # input data
         ds_in = os.path.basename(collection[0])
@@ -136,7 +136,9 @@ class Provenance(object):
             )
         return entity
 
-    def _execution_activity(self, identifier, label=None, attributes=None, start=None, end=None):
+    def _execution_activity(
+        self, identifier, label=None, attributes=None, start=None, end=None
+    ):
         records = self.doc.get_record(identifier)
         if records:
             activity = records[0]
@@ -151,9 +153,9 @@ class Provenance(object):
         if attributes:
             activity.add_attributes(attributes)
         if start and end:
-            time_attribures={
+            time_attribures = {
                 prov.PROV_ATTR_STARTTIME: start,
-                prov.PROV_ATTR_ENDTIME: end
+                prov.PROV_ATTR_ENDTIME: end,
             }
             activity.add_attributes(time_attribures)
         return activity
@@ -171,12 +173,12 @@ class Provenance(object):
 
     def get_provn(self):
         return self.doc.get_provn()
-    
+
     def get_rdf(self):
         # Serialize the PROV document to RDF format
         rdf_data = self.doc.serialize(format="rdf", rdf_format="turtle")
         return rdf_data
-    
+
     def write_rdf(self):
         outfile = self.output_dir / "provenance.ttl"
         with open(outfile.as_posix(), "w") as f:
@@ -191,4 +193,3 @@ class Provenance(object):
 
     def json(self):
         return json.loads(self.dump_json())
-    
