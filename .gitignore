@@ -112,5 +112,5 @@ testdata.json
 # macos
 .DS_Store
 
-# provenance
-provenance.db
+# tests
+PET0.ESMF_LogFile

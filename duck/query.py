@@ -11,7 +11,7 @@ def display_image(base64_image):
     return '<img src="data:image/png;base64,{}" width="200"/>'.format(base64_image)
 
 def display_json(data):
-    content = json.loads(data)
+    content = json.dumps(data, indent=4)
     return f"<pre>{content}</pre>"
 
 def query():
@@ -73,7 +73,7 @@ def query():
             "Histogram": display_image(histogram),
         }
         for key in info:
-            entry[key] = info[key]
+            entry[key] = display_json(info[key])
         data.append(entry)
     df = pd.DataFrame(data)
     return df
