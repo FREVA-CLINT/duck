@@ -182,6 +182,7 @@ class ClintAI(Process):
                 "mean": stats["mean"],
                 "stddev": stats["std"],
                 "info": json.dumps(datastats.info, separators=(',', ':')),
+                "histogram": datastats.histogram,
             }, 
             [datasets[0].as_posix()], 
             [f"{datasets[0].as_posix()}_infilled.nc"],

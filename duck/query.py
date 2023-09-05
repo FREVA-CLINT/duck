@@ -1,10 +1,22 @@
 from duck.db import GraphDB
 import pandas as pd
+import base64
+from PIL import Image
+import io
+import json
 
+def display_image(base64_image):
+    img_data = base64.b64decode(base64_image)
+    img = Image.open(io.BytesIO(img_data))
+    return '<img src="data:image/png;base64,{}" width="200"/>'.format(base64_image)
+
+def display_json(data):
+    content = json.loads(data)
+    return f"<pre>{content}</pre>"
 
 def query():
     query_str = """
-        SELECT ?process ?dataset ?variable ?startTime ?endTime ?input ?output ?min ?max ?mean ?stddev ?info
+        SELECT ?process ?dataset ?variable ?startTime ?endTime ?input ?output ?min ?max ?mean ?stddev ?info ?histogram
         WHERE {
             ?exec rdf:type provone:Execution ;
                 rdfs:label ?process ;
@@ -16,7 +28,8 @@ def query():
                 clint:max ?max ;
                 clint:mean ?mean ;
                 clint:stddev ?stddev ;
-                clint:info ?info .
+                clint:info ?info ;
+                clint:histogram ?histogram .
 
             ?input rdf:type prov:Entity .
         
@@ -43,8 +56,9 @@ def query():
         max = row.max.value
         mean = row.mean.value
         stddev = row.stddev.value
-        info = row.info.value
-        data.append({
+        info = json.loads(row.info.value)
+        histogram = row.histogram.value
+        entry = {
             "Process": process, 
             "Dataset": dataset,
             "Variable": variable, 
@@ -52,11 +66,14 @@ def query():
             "End Time": end_time,
             "Input": input,
             "Output": output,
-            "Min": min,
-            "Max": max,
-            "Mean": mean,
-            "StdDev": stddev,
-            "Info": info,
-        })
+            # "Min": min,
+            # "Max": max,
+            # "Mean": mean,
+            # "StdDev": stddev,
+            "Histogram": display_image(histogram),
+        }
+        for key in info:
+            entry[key] = info[key]
+        data.append(entry)
     df = pd.DataFrame(data)
     return df

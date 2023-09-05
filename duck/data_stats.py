@@ -3,6 +3,11 @@ import matplotlib.pyplot as plt
 import numpy as np
 import yaml
 import pathlib
+import io
+import base64
+
+# import matplotlib
+# matplotlib.use('agg')
 
 def get_stats(data):
     return {
@@ -20,6 +25,7 @@ class DataStats(object):
         else:
             self.output_dir = pathlib.Path(output_dir)
         self.info = None
+        self.histogram = None
 
    
     def gen_data_stats(self, filename, var, nbins=100):
@@ -41,14 +47,28 @@ class DataStats(object):
         mratio = 1 - mratio / (nlon * nlat)
 
         # TODO: It would be great to store the distribution graph in a database
-        if False:
+        if True:
+            plt.close()
             plt.imshow(hist, aspect="auto", origin='lower', extent=[vstats["min"], vstats["max"], 0, ntime], cmap="gist_ncar")
             ax = plt.gca()
             ax.grid(color='gray', linestyle='-.', linewidth=1)
             plt.xlabel(var)
             plt.ylabel("Timesteps")
-            outfile = self.output_dir / "histime.png"
-            plt.savefig(outfile.as_posix(), dpi=50)
+            # outfile = self.output_dir / "histogram.png"
+            # print(f"histogram: {outfile}")
+            # plt.savefig(outfile.as_posix(), dpi=50)
+            # store as base64
+            # Save the plot to a BytesIO object
+            buffer = io.BytesIO()
+            plt.savefig(buffer, format='png')
+            buffer.seek(0)
+
+            # Encode the BytesIO object as base64
+            base64_encoded_plot = base64.b64encode(buffer.read()).decode('utf-8')
+            print(f"{base64_encoded_plot}")
+            self.histogram = base64_encoded_plot
+            # close plot
+            plt.close()
 
         # The following information should be stored in a database
         attrs = {}
@@ -64,8 +84,7 @@ class DataStats(object):
         self.info["Vars"] = list(dict(ds.variables).keys())
         self.info["Vstats"] = vstats
         self.info["Mstats"] = get_stats(mratio)
-        # self.info["Hist"] = hist
-        print(self.info)
+        # print(self.info)
     
     def write_json(self):
         outfile = self.output_dir / "info.txt"
@@ -73,9 +92,3 @@ class DataStats(object):
             yaml.dump(self.info, f)
         return outfile
     
-    def write_png(self):
-        outfile = self.output_dir / "histime.png"
-        return outfile
-
-
-

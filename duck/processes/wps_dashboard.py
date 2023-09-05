@@ -53,7 +53,7 @@ class Dashboard(Process):
     
     def write_html(self, df, workdir):
         # Convert the DataFrame to an HTML table
-        html_table = df.to_html(index=False)
+        html_table = df.to_html(escape=False, index=False)
 
         # Define the HTML template
         html_template = f"""

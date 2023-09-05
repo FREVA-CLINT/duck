@@ -95,6 +95,7 @@ class Provenance(object):
             "stddev",
             "mean",
             "info",
+            "histogram",
             "dataset_name",
             "variable_name",
         ]:
