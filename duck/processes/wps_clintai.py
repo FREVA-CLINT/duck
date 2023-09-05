@@ -27,6 +27,7 @@ LOGGER = logging.getLogger("PYWPS")
 FORMAT_PNG = Format("image/png", extension=".png", encoding="base64")
 
 MEDIA_ROLE = "http://www.opengis.net/spec/wps/2.0/def/process/description/media"
+INFO_ROLE = "https://clint.dkrz.de/spec/crai/info"
 
 models_list = list(craimodels.info_models().keys())
 
@@ -83,6 +84,11 @@ class ClintAI(Process):
             version="0.1.0",
             abstract="AI-enhanced climate service to infill missing values in climate datasets.",
             metadata=[
+                Metadata(
+                    title="CRAI Info Model",
+                    href='{"test":1}',
+                    role=INFO_ROLE,
+                ),
                 Metadata(
                     title="CRAI Logo",
                     href="https://github.com/FREVA-CLINT/duck/raw/main/docs/source/_static/crai_logo.png",

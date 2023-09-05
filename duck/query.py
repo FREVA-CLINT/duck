@@ -17,7 +17,7 @@ def display_json(data):
 
 def query():
     query_str = """
-        SELECT ?process ?dataset ?variable ?startTime ?endTime ?input ?output ?min ?max ?mean ?stddev ?info ?histogram
+        SELECT ?process ?dataset ?variable ?startTime ?endTime ?input ?output ?info ?histogram
         WHERE {
             ?exec rdf:type provone:Execution ;
                 rdfs:label ?process ;
@@ -25,10 +25,6 @@ def query():
                 clint:variable_name ?variable ;
                 prov:startedAtTime ?startTime ;
                 prov:endedAtTime ?endTime ;
-                clint:min ?min ;
-                clint:max ?max ;
-                clint:mean ?mean ;
-                clint:stddev ?stddev ;
                 clint:info ?info ;
                 clint:histogram ?histogram .
 
