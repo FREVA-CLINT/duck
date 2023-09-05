@@ -5,6 +5,9 @@ from datetime import datetime
 import json
 import xarray as xr
 
+import matplotlib
+matplotlib.use('agg')
+
 from pywps import Process
 from pywps import LiteralInput, ComplexInput, ComplexOutput
 from pywps import FORMATS, Format
@@ -121,7 +124,7 @@ class ClintAI(Process):
             raise ProcessError("Could not find netcdf files.")
         
         # run crai
-        # istep = 100 / ndata
+        istep = 100 / ndata
         i = 0
         for dataset in datasets:
 
@@ -133,15 +136,15 @@ class ClintAI(Process):
 
             try:
                 # dummy start
-                dummy(workdir, datasets)
+                # dummy(workdir, datasets)
                 # end
 
-                # clintai.run(
-                #     dataset,
-                #     dataset_name=dataset_name,
-                #     variable_name=variable_name,
-                #     outdir=workdir,
-                #     update_status=[response.update_status, i, istep])
+                clintai.run(
+                    dataset,
+                    dataset_name=dataset_name,
+                    variable_name=variable_name,
+                    outdir=workdir,
+                    update_status=[response.update_status, i, istep])
             except Exception as e:
                 raise ProcessError(str(e))
 
@@ -163,7 +166,7 @@ class ClintAI(Process):
 
         # stats
         datastats = DataStats(self.workdir)
-        datastats.gen_data_stats(datasets[0].as_posix(), variable_name)
+        datastats.gen_data_stats(outfile.as_posix(), variable_name)
         stats = datastats.info["Mstats"]
 
         # prov
