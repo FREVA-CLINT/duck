@@ -14,6 +14,7 @@ class Dashboard(Process):
                 abstract="The time period for the report seperated by /"
                 "Example: 2023-09-01/2023-09-30",
                 data_type="string",
+                default="2023-09-01/2023-09-30"
                 min_occurs=0,
                 max_occurs=1,
             ),
@@ -47,8 +48,9 @@ class Dashboard(Process):
         # Generate an HTML report from the DataFrame
         html_report = self.write_html(df, workdir)
 
+        print(f"report: {html_report}")
         response.outputs["report"].file = html_report
-        response.outputs["report"].output_format = Format("text/html")
+        # response.outputs["report"].output_format = Format("text/html")
 
         return response
 
