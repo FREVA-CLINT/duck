@@ -86,7 +86,7 @@ class ClintAI(Process):
             metadata=[
                 Metadata(
                     title="CRAI Info Model",
-                    href=craimodels.raw_text(),
+                    href=f"{craimodels.raw_text()}",
                     role=INFO_ROLE,
                 ),
                 Metadata(
