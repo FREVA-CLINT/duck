@@ -36,6 +36,8 @@ class Dashboard(Process):
             abstract="Generate an HTML report from a provenance database.",
             inputs=inputs,
             outputs=outputs,
+            status_supported=True,
+            store_supported=True,
         )
 
     def _handler(self, request, response):
