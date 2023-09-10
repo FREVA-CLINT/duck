@@ -219,11 +219,13 @@ class ClintAI(Process):
                 (workdir / "outputs").rglob("*_infilled.nc"), key=os.path.getmtime
             )
 
+            outfile_for_stats = infiles[0]
             with ZipFile(outfile, "w") as zip:
                 for infile in infiles:
                     zip.write(infile, arcname=infile.as_posix().split("/")[-1])
         else:
             outfile = workdir / "outputs" / str(datasets[0].stem + "_infilled.nc")
+            outfile_for_stats = outfile
 
         response.outputs["output"].file = outfile
         response.outputs["plot"].file = (
@@ -232,7 +234,7 @@ class ClintAI(Process):
 
         # stats
         datastats = DataStats(self.workdir)
-        datastats.gen_data_stats(outfile.as_posix(), variable_name)
+        datastats.gen_data_stats(outfile_for_stats.as_posix(), variable_name)
         stats = datastats.info["Mstats"]
 
         # prov
