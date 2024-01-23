@@ -31,8 +31,7 @@ MEDIA_ROLE = "http://www.opengis.net/spec/wps/2.0/def/process/description/media"
 INFO_ROLE = "https://clint.dkrz.de/spec/crai/info"
 
 models_list = list(craimodels.info_models().keys())
-info_models = yaml.safe_load(craimodels.metadata())
-info_models_string = json.dumps(info_models, separators=(',', ':'))
+info_models_string = json.dumps(craimodels.metadata(), separators=(',', ':'))
 
 class ClintAI(Process):
     def __init__(self):
