@@ -1,11 +1,13 @@
 from rdflib import Graph, URIRef
 from rdflib.plugins.sparql import prepareQuery
-# from pywps import configuration
+
+from pywps import configuration
 
 # Provide the path to the SQLite database in the local folder
-DB_URL = "sqlite:////var/lib/pywps/db/provenance.sqlite"
+# DB_URL = "sqlite:////var/lib/pywps/db/provenance.sqlite"
 # DB_URL = "sqlite:////tmp/provenance.sqlite"
 # DB_URL = configuration.get_config_value('provenance', 'db_url')
+DB_URL = configuration.get_config_value("logging", "database")
 
 
 class GraphDB(object):
