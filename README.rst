@@ -27,7 +27,7 @@ Documentation
 -------------
 
 Learn more about Duck in its official documentation at
-https://duck.readthedocs.io.
+https://clint-duck.readthedocs.io.
 
 Submit bug reports, questions and feature requests at
 https://github.com/FREVA-CLINT/duck/issues
@@ -44,7 +44,7 @@ License
 -------
 
 * Free software: Apache Software License 2.0
-* Documentation: https://duck.readthedocs.io.
+* Documentation: https://clint-duck.readthedocs.io.
 
 
 Credits
