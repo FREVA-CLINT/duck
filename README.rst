@@ -13,7 +13,10 @@ Duck
 Duck (the bird)
   *Ducks are very social animals, as is evident by their loud quacking at all hours of the day.* (`Smart Birds`_)
 
-A Demo Web Service for `CRAI`_.
+
+Duck provides an AI-enhanced service to infill missing values in climate datasets. 
+The AI implemention is provided by the `CRAI`_ sofware. 
+The algorithm and service is described in more detail in the smartduck_ documentation.
 
 
 Get Started
@@ -30,7 +33,7 @@ Learn more about Duck in its official documentation at
 https://clint-duck.readthedocs.io.
 
 Submit bug reports, questions and feature requests at
-https://github.com/FREVA-CLINT/duck/issues
+https://github.com/climateintelligence/duck/issues
 
 Contributing
 ------------
@@ -58,3 +61,4 @@ This package was created with Cookiecutter_ and the `bird-house/cookiecutter-bir
 .. _bumpversion: https://duck.readthedocs.io/en/latest/dev_guide.html#bump-a-new-version
 .. _`Smart Birds`: https://wildletter.com/2022/01/23/smartest-birds/
 .. _`CRAI`: https://github.com/FREVA-CLINT/climatereconstructionAI/tree/clint/demo
+.. _smartduck: https://climateintelligence.github.io/smartduck-docs/sections/intro.html
